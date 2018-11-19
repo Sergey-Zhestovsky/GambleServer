@@ -1,0 +1,30 @@
+.wrapper {
+	height: calc(100% - 50px);
+	display: flex;
+	align-items: center;
+}
+.error__title {
+    margin: 45px 0;
+    position: relative;
+}
+.error__title-code {
+    z-index: 2;
+    opacity: 0.95;
+    font-size: 28em;
+    min-height: 1em;
+    font-weight: 900;
+    padding-top: 20px;
+    color: #814366;
+    position: relative;
+    text-shadow: 20px 20px 0px rgba(129, 67, 102, 0.3);
+}
+.error__title-message {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 14em;
+    font-weight: 900;
+    text-align: right;
+    z-index: 1;
+    color: rgba(0, 0, 0, 0.5);
+}

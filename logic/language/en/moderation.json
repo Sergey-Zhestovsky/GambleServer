@@ -1,0 +1,14 @@
+{
+	"usersConfirmation": "Users confirmation",
+	"id": "Id",
+	"name": "Full name",
+	"mail": "E-mail",
+	"account": "Account",
+	"options": "Options",
+	"devicesRentConfirmation": "Devices rent confirmation",
+	"address": "Address",
+	"containerNumder": "Container №",
+	"deliveryConfirmation": "Devices initial delivery confirmation",
+	"passportId": "Passport identity",
+	"confirm": "Confirm"
+}

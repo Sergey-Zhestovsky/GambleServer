@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<% include _layouts/header %>
+		<link rel='stylesheet' href='/css/authorisation.css'/>
+	</head>
+	<body>
+    <% include _layouts/title %>
+      <div class="wrapper">
+          <div class="authorisation center-align">
+            <form class="authorisation__form" id="authorisationForm">
+              <span class="authorisation__title" data-text="<%= text.page.authorisation %>"><%= text.page.authorisation %></span>
+              <div class="authorisation__wrepper">
+                <div class="authorisation__label-wrapper">
+                  <label class="authorisation__label">
+                    <span class="authorisation__label-title"><%= text.page.mail %></span>
+                    <input class="authorisation__input" type="text" id="mailInput" autofocus/>
+                  </label>
+                  <div class="authorisation__error"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i><div id="mailError">вап</div></div>
+                </div>
+                <div class="authorisation__label-wrapper">
+                  <label class="authorisation__label">
+                    <span class="authorisation__label-title"><%= text.page.password %></span>
+                    <input class="authorisation__input" type="password" id="passwordInput"/>
+                  </label>
+                  <div class="authorisation__error"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i><div id="passwordError">вап</div></div>
+                </div>
+              </div>
+              <div class="authorisation__submit-button" id="submitForm"><%= text.page.logIn %></div>
+            </form>
+          </div>
+      </div>
+    <% include _layouts/footer %>
+	</body>
+  <script async defer type="text/javascript" src="/js/formValidator.js"></script>
+  <script async defer type="text/javascript" src="/js/page/authorisation.js"></script>
+</html>

@@ -1,0 +1,106 @@
+.authorisation {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.authorisation__form {
+    padding: 20px;
+    text-align: center;
+    font-size: 1.1em;
+}
+.authorisation__title {
+    display: block;
+    text-align: center;
+    font-size: 2.4em;
+    font-weight: 900;
+    color: #080622;
+    padding-bottom: 1em;
+    position: relative;
+    z-index: 1;
+}
+.authorisation__title:after {
+    content: attr(data-text);
+    position: absolute;
+    top: -.75em;
+    left: 50%;
+    z-index: -1;
+    color: #0806220f;
+    font-size: 2.5em;
+    transform: translate(-50%, 0%);
+}
+.authorisation__wrepper {
+    margin: 0 auto;
+    width: max-content;
+}
+.authorisation__label {
+    position: relative;
+	display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0.5em 0;
+}
+.authorisation__label-title {
+	padding-right: 15px;
+}
+.authorisation__label-title:after {
+	content: ": ";
+}
+.authorisation__input {
+    background: inherit;
+    border: none;
+    border-bottom: 3px solid #080622;
+    padding: 3px 5px;
+    transition: all 0.125s;
+}
+.authorisation__submit-button {
+    display: inline-block;
+    margin: 2em auto 0;
+    padding: 10px 25px;
+    font-size: 1.2em;
+    border: 3px solid #080622;
+    cursor: pointer;
+    color: #080622;
+    font-weight: 900;
+    transition: color .125s, background .125s;
+}
+.authorisation__submit-button:hover {
+    color: #e9e7ea;
+    background: #080622;
+}
+.authorisation__form-error {
+    border-bottom: 3px solid #900000;
+}
+.authorisation__error {
+    position: absolute;
+    left: 100%;
+    top: 30%;
+    white-space: nowrap;
+    margin: 0px 5px;
+    padding: 0px 10px 0px 20px;
+    color: #7b0000;
+    overflow: hidden;
+    max-width: 300px;
+    text-overflow: ellipsis;
+    font-size: 0.9em;
+}
+.authorisation__error i {
+    position: absolute;
+    left: 0px;
+    top: 2px;
+}
+.authorisation__label-wrapper {
+    position: relative;
+}
+
+@media screen and (max-width: 900px) {
+    .authorisation__error {
+        position: relative;
+        margin: 5px 0;
+        padding: 0px 0px 0px 25px;
+        text-align: left;
+        color: #7b0000;
+        max-width: 300px;
+        left: unset;
+        white-space: normal;
+    }
+}

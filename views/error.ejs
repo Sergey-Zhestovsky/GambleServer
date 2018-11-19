@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include _layouts/header %>
+    <link rel='stylesheet' href='/css/error.css'/>
+</head>
+<body>
+<% include _layouts/title %>
+<div class="wrapper">
+    <div class="error center-align">
+    	<div class="error__title">
+
+			<div class="error__title-code"><%= error.status %></div>
+    		<div class="error__title-message"><%= message %></div>
+    	</div>
+    </div>
+</div>
+<% include _layouts/footer %>
+</body>
+</html>
