@@ -1,5 +1,5 @@
 {
-  "port": "3228",
+  "port": "3222",
   "default_language": "en",
   "map_key": "AIzaSyB2DGcZmx6-X0p8IPepZf3EKXidzroXaac",
   "encode_server_key": "ZQ26e-0sxNw-d0fdz-rYqql-BzotU-0woTc",
@@ -8,5 +8,12 @@
       "user"     : "root",
       "password" : "root",
       "database" : "Gamble"
+  },
+  "mongoDB_connect": {
+    "uri": "mongodb://localhost/Gamble",
+    "options": { 
+      "useNewUrlParser": "true", 
+      "useCreateIndex": "true" 
+    }
   }
 }
