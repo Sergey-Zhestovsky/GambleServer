@@ -35,14 +35,14 @@ router.post('/login', function(req, res, next) {
     if (validator(data, ["mail", "password"]))
         return res.send(errorGenerator.requireData());
 
-    mongo.getUser(data, (error, answer) => {
+    mongo.getUser({mail: data.mail}, data, (error, answer) => {
         if (error) {
             return res.send(errorGenerator.mongodbError(req, error));
         }
-    
+
         let auth = new User({
             id: answer._id,
-            privilege: answer.privilege == null ? undefined : answer.privilege
+            privilege: answer.privilegeObj == null ? undefined : answer.privilegeObj.type
         });
     
         auth.authorise(res).then(answer => {

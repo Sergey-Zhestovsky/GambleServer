@@ -89,7 +89,6 @@ function authorisation(options) {
     block.find('.authorisation__error').hide();
   }
 
-  block.find("#submitForm").click(login);
   block.submit(function (event) {
     login();
     event.preventDefault();
