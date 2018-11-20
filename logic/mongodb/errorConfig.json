@@ -1,0 +1,11 @@
+{
+	"setUser": {
+		"11000": "existing email"
+	},
+	"getUser": {
+		"custom001": "no such user"
+	},
+	"default": {
+		"11000": "duplicate required values"
+	}
+}
