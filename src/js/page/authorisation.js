@@ -7,6 +7,10 @@ function authorisation(options) {
     fields = {
       mail: block.find('#mailInput'),
       password: block.find('#passwordInput')
+    },
+    errorFields = {
+      mail: block.find('#mailError'),
+      password: block.find('#passwordError')
     };
 
 
@@ -34,6 +38,27 @@ function authorisation(options) {
     for (let key in errors) {
       if (key in fields)
         fields[key].addClass('authorisation__form-error');
+
+      if (key in errorFields) {
+        setErrorMessage(errorFields[key], localization["validate_" + errors[key][0]]);
+      }
+    }
+  }
+
+  function setErrorMessage(field, message) {
+    field.text(message).parent().show();
+  }
+
+  function errorHandler(error) {
+    clear();
+
+    switch (error.title) {
+      case "loginError":
+        setErrorMessage(errorFields.mail, error.message);
+        break;
+      default:
+        throw new Error(`POST ERROR: \n ${error.message}`);
+        break;
     }
   }
 
@@ -51,18 +76,22 @@ function authorisation(options) {
       asinc: true,
       success: function(answer) {
         if (answer.error) {
-          alert(answer.error.message)
-          throw new Error(`POST ERROR path: ${path}. \n ${answer.error.message}`);
+          errorHandler(answer.error);
+        } else {
+          location.reload();
         }
-
-        location.reload();
       }
     });
   }
 
   function clear() {
     block.find('.authorisation__form-error').removeClass("authorisation__form-error");
+    block.find('.authorisation__error').hide();
   }
 
   block.find("#submitForm").click(login);
+  block.submit(function (event) {
+    login();
+    event.preventDefault();
+  });
 }
