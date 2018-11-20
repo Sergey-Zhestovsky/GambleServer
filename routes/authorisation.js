@@ -1,64 +1,54 @@
 let express = require('express'),
     router = express.Router(),
-    config = require('../config'),
-    requests = require('../logic/sql/requests'),
-    errorGenerator = require('../logic/error-generator'),
+    mongo = require('../logic/mongodb/API'),
     language = require('../logic/language'),
-    User = require('../logic/class/user');
+    errorGenerator = require('../logic/error-generator'),
+    User = require('../logic/class/user'),
+    validator = require('../logic/class/requestValidator');
 
-let sql = new requests({connection: config.get('sql_connect')});
+router.post('/exit', function(req, res, next) {
+    if (req.data.user && req.data.user.id == undefined)
+        return res.redirect(`/`);
 
-router.get('/exit', function(req, res, next) {
-  if(req.data.user && req.data.user.id == undefined)
-    return res.redirect(`/`);
-
-  let auth = new User({
-    token: req.cookies.token
-  });
-
-  auth.exit(res).then(answer => {
-    console.log(answer)
-    res.redirect('/');
-  });
+    new User().exit(req.cookies.token, res).then(answer => {
+        res.redirect('back');
+    });
 });
 
 router.all('*', function(req, res, next) {
-  if(req.data.user && req.data.user.id !== undefined)
-    return res.redirect(`/`);
-  next();
+    if (req.data.user && req.data.user.id !== undefined)
+        return res.redirect(`/`);
+    next();
 });
 
 router.get('/', function(req, res, next) {
-  res.render('authorisation', {
-    title: 'Gamble',
-    user: req.data.user,
-    text: language.getTranslate(req.data.language, 'authorization')
-  });
+    res.render('authorisation', {
+        title: 'Gamble',
+        user: req.data.user,
+        text: language.getTranslate(req.data.language, 'authorization')
+    });
 });
 
 router.post('/login', function(req, res, next) {
-  let data = req.body;
+    let data = req.body;
+  
+    if (validator(data, ["mail", "password"]))
+        return res.send(errorGenerator.requireData());
 
-  if(
-    data.mail === undefined || data.mail === "" ||
-    data.password === undefined || data.password === ""
-  )
-    return res.send(errorGenerator.requireData());
-
-  sql.getUser(data, function (answer) {
-    if(!(answer !== undefined && answer.user_id !== undefined))
-      return res.send(errorGenerator.loginError());
-
-    let auth = new User({
-      id: answer.user_id,
-      userSalt: answer.user_id,
-      privilege: answer.privilege_id == null ? undefined : answer.privilege_id
+    mongo.getUser(data, (error, answer) => {
+        if (error) {
+            return res.send(errorGenerator.mongodbError(req, error));
+        }
+    
+        let auth = new User({
+            id: answer._id,
+            privilege: answer.privilege == null ? undefined : answer.privilege
+        });
+    
+        auth.authorise(res).then(answer => {
+            res.send(true);
+        });
     });
-
-    auth.authorise(res).then(answer => {
-      res.send(true);
-    });
-  });
 });
 
 module.exports = router;

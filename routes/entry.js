@@ -41,6 +41,8 @@ function crossDomainFireWall([req, res]) {
 }
 
 function authoriseUser([req, res]) {
+  req.data.user = {};
+
   return new Promise((resolve, reject) => {
     if (req.cookies.token !== undefined) {
       let auth = new User();
@@ -55,7 +57,6 @@ function authoriseUser([req, res]) {
           resolve([req, res]);
         });
     } else {
-      req.data.user = {};
       resolve([req, res]);
     }
   });
