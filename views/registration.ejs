@@ -1,39 +1,68 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<% include _layouts/header %>
-		<link rel='stylesheet' href='/css/authorisation.css'/>
-	</head>
-	<body>
+
+<head>
+    <% include _layouts/header %>
+    <link rel='stylesheet' href='/css/authorisation.css' />
+</head>
+
+<body>
+    <script type="text/javascript">
+    window.localization = <%- JSON.stringify(text.page) %>;
+    </script>
     <% include _layouts/title %>
-      <div class="wrapper">
-          <div class="authorisation center-align">
+    <div class="wrapper">
+        <div class="authorisation center-align">
             <form class="authorisation__form" id="registrationForm">
-              <span class="authorisation__title" data-text="<%= text.page.registration %>"><%= text.page.registration %></span>
-              <div class="authorisation__wrepper">
-                <label class="authorisation__label">
-                  <span class="authorisation__label-title"><%= text.page.name %></span>
-                  <input class="authorisation__input" type="text" id="nameInput" autofocus/>
-                </label>
-                <label class="authorisation__label">
-                  <span class="authorisation__label-title"><%= text.page.mail %></span>
-                  <input class="authorisation__input" type="text" id="mailInput"/>
-                </label>
-                <label class="authorisation__label">
-                  <span class="authorisation__label-title"><%= text.page.password %></span>
-                  <input class="authorisation__input" type="password" id="passwordInput"/>
-                </label>
-                <label class="authorisation__label">
-                  <span class="authorisation__label-title"><%= text.page.confirmPassword %></span>
-                  <input class="authorisation__input" type="password" id="rePasswordInput"/>
-                </label>
-              </div>
-              <div class="authorisation__submit-button" id="submitForm"><%= text.page.signUp %></div>
+                <span class="authorisation__title" data-text="<%= text.page.registration %>"><%= text.page.registration %></span>
+                <div class="authorisation__wrepper">
+                    <div class="authorisation__label-wrapper">
+                        <label class="authorisation__label">
+                            <span class="authorisation__label-title"><%= text.page.name %></span>
+                            <input class="authorisation__input" type="text" id="nameInput" autofocus />
+                        </label>
+                        <div class="authorisation__error"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                            <div id="nameError">вап</div>
+                        </div>
+                    </div>
+                    <div class="authorisation__label-wrapper">
+                        <label class="authorisation__label">
+                            <span class="authorisation__label-title"><%= text.page.mail %></span>
+                            <input class="authorisation__input" type="text" id="mailInput" />
+                        </label>
+                        <div class="authorisation__error"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                            <div id="mailError">вап</div>
+                        </div>
+                    </div>
+                    <div class="authorisation__label-wrapper">
+                        <label class="authorisation__label">
+                            <span class="authorisation__label-title"><%= text.page.password %></span>
+                            <input class="authorisation__input" type="password" id="passwordInput" />
+                        </label>
+                        <div class="authorisation__error"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                            <div id="passwordError">вап</div>
+                        </div>
+                    </div>
+                    <div class="authorisation__label-wrapper">
+                        <label class="authorisation__label">
+                            <span class="authorisation__label-title"><%= text.page.confirmPassword %></span>
+                            <input class="authorisation__input" type="password" id="rePasswordInput" />
+                        </label>
+                        <div class="authorisation__error"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                            <div id="rePasswordError">вап</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="authorisation__submit-button" id="submitForm" type="submit">
+                    <%= text.page.signUp %>
+                </button>
             </form>
-          </div>
-      </div>
+        </div>
+    </div>
     <% include _layouts/footer %>
-	</body>
-  <script async defer type="text/javascript" src="/js/formValidator.js"></script>
-  <script async defer type="text/javascript" src="/js/page/registration.js"></script>
+</body>
+<script async defer type="text/javascript" src="/js/header.js"></script>
+<script async defer type="text/javascript" src="/js/formValidator.js"></script>
+<script async defer type="text/javascript" src="/js/page/registration.js"></script>
+
 </html>

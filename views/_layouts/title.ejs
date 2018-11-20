@@ -1,4 +1,4 @@
-<div class="title">
+<div class="title" id="titleBlock">
 	<div class="center-align flex-block">
 		<div class="title__block">
 			<a class="title__logo" href="/">
@@ -7,7 +7,8 @@
 		</div>
 		<div class="title__block">
 			<%if (user.id != undefined) { %>
-   				<a class="title__bar-button title__link" href="/authorisation/exit"><%= text.title.exit %></a>
+				<a class="title__bar-button title__link" id="exitButton"><%= text.title.exit %></a>
+
    				<a class="title__bar-button title__link" href="/account"><%= text.title.account %></a>
     		<% } else{ %>
 			    <a class="title__bar-button title__link" href="/authorisation"><%= text.title.signIn %></a>

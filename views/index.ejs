@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<% include _layouts/header %>
-		<link rel='stylesheet' href='/css/main.css'/>
-	</head>
-	<body>
+
+<head>
+    <% include _layouts/header %>
+    <link rel='stylesheet' href='/css/main.css' />
+</head>
+
+<body>
     <script type="text/javascript">
-      window.localization =  <%- JSON.stringify(text.layouts) %>;
+    window.localization = <%- JSON.stringify(text.layouts) %>;
     </script>
     <% include _layouts/title %>
-      <div class="wrapper">
+    <div class="wrapper">
         HI
-      </div>
+    </div>
     <% include _layouts/footer %>
-	</body>
-  <script async defer type="text/javascript" src="/js/page/index.js"></script>
+</body>
+<script async defer type="text/javascript" src="/js/header.js"></script>
+<script async defer type="text/javascript" src="/js/page/index.js"></script>
+
 </html>
