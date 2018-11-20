@@ -50,7 +50,7 @@
     border: none;
     border-bottom: 3px solid #080622;
     padding: 3px 5px;
-    transition: all 0.125s;
+    transition: border 0.125s;
 }
 .authorisation__submit-button {
     display: inline-block;
@@ -71,12 +71,14 @@
     border-bottom: 3px solid #900000;
 }
 .authorisation__error {
+    display: none;
     position: absolute;
     left: 100%;
-    top: 30%;
+    top: 50%;
+    transform: translate(0%, -50%);
     white-space: nowrap;
-    margin: 0px 5px;
-    padding: 0px 10px 0px 20px;
+    margin: 0px 10px;
+    padding: 0px 10px 0px 1.5em;
     color: #7b0000;
     overflow: hidden;
     max-width: 300px;
@@ -96,11 +98,14 @@
     .authorisation__error {
         position: relative;
         margin: 5px 0;
-        padding: 0px 0px 0px 25px;
-        text-align: left;
+        padding: 0px 25px 0px 0px;
+        text-align: right;
         color: #7b0000;
-        max-width: 300px;
+        max-width: unset;
         left: unset;
         white-space: normal;
+    }
+    .authorisation__error i {
+        right: 0px;
     }
 }
