@@ -6,5 +6,8 @@
 	"registration":"Registration",
 	"name":"Full name",
 	"confirmPassword":"Confirm password",
-	"signUp":"Sign up"
+	"signUp":"Sign up",
+	"validate_required": "Required data",
+	"validate_email": "Email is not valid",
+	"validate_password": "Passwords do not match"
 }

@@ -6,5 +6,8 @@
 	"registration":"Реєстрація",
 	"name":"Повне ім'я",
 	"confirmPassword":"Підтвердіть пароль",
-	"signUp":"Зареєструватися"
+	"signUp":"Зареєструватися",
+	"validate_required": "Обов'язковe поле",
+	"validate_email": "Введіть дійсну електронну пошту",
+	"validate_password": "Паролі не збігаються"
 }

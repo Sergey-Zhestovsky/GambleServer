@@ -13,15 +13,7 @@ User.prototype.verifyFromToken = function (token) {
       if(err)
         reject(err);
 
-      let user;
-
-      try {
-        user = JSON.parse(decoded);
-      } catch(e) {
-        reject(e);
-      }
-
-      resolve(new User(user));
+      resolve(new User(decoded));
     });
   });
 };
@@ -33,9 +25,9 @@ User.prototype.getUser = function () {
   }
 };
 
-User.prototype.exit = function (res) {
+User.prototype.exit = function (token, res) {
   return new Promise((resolve, reject) => {
-    jwt.verify(this.token, config.get('encode_server_key'), function (err, decoded) {
+    jwt.verify(token, config.get('encode_server_key'), function (err, decoded) {
       res.cookie('token', null, {expires: new Date(0)});
 
       if (err)
@@ -47,9 +39,6 @@ User.prototype.exit = function (res) {
 };
 
 User.prototype.authorise = function (res) {
-  if(!this.userSalt)
-    return errorGenerator.userSaltError();
-
   return new Promise((resolve, reject) => {
     let user = this.getUser(),
         userJSON = JSON.stringify(user),
