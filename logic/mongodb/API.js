@@ -50,7 +50,7 @@ function getUser(searchData, data, cb = data) {
 function getProductTypes(cb = function(){}) {
     schemas.ProductType.find({}, function(err, value) {
         if (err) {
-            return errorHandler("getUser", err, cb);
+            return errorHandler("getProductTypes", err, cb);
         }
 
         cb(null, value);
@@ -62,15 +62,26 @@ function setProductType(data, cb = function(){}) {
 
     productTypes.save(function(err, value) {
         if (err) {
-            return errorHandler("setUser", err, cb);
+            return errorHandler("setProductType", err, cb);
         }
 
         cb(null, value);
     });
 }
 
-function getProduct(data, cb = function(){}) {
-    schemas.ProductType.find({}, function(err, value) {
+function getProduct(searchData, data, cb = function(){}) {
+    schemas.ProductType.aggregate([{
+        $match: searchData
+    }, {
+        $lookup: {
+            from: 'producttypes',
+            localField: 'producttype',
+            foreignField: '_id',
+            as: 'producttype'
+        }
+    }, {
+        $unwind: "$producttype"
+    }], function(err, value) {
         if (err) {
             return errorHandler("getUser", err, cb);
         }
@@ -80,7 +91,15 @@ function getProduct(data, cb = function(){}) {
 }
 
 function setProduct(data, cb = function(){}) {
-    
+    let product = new schemas.Product(data);
+
+    product.save(function(err, value) {
+        if (err) {
+            return errorHandler("setProduct", err, cb);
+        }
+
+        cb(null, value);
+    });
 }
 
 module.exports = {

@@ -71,16 +71,16 @@ productTypeScheme.path('url').default(function () {
 });
 
 let productConfig = {
-        name: {
-            type: String
-        },
-        vaue: {
-            type: String
-        }, 
-        using: {
-            type: Boolean
-        }
-    };
+    name: {
+        type: String
+    },
+    value: {
+        type: String
+    }, 
+    using: {
+        type: Boolean
+    }
+};
 
 let productScheme = new Schema({
     productType: {
