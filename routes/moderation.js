@@ -16,43 +16,9 @@ router.all('*', function(req, res, next) {
 
 router.get('/', function(req, res, next) {
   res.render('moderation', {
-    title: 'SmartShare',
+    title: 'Gamble',
     user: req.data.user,
     text: language.getTranslate(req.data.language, 'moderation'),
-  });
-});
-
-router.post('/', function(req, res, next) {
-  sql.getModerationData(function (answer) {
-    res.send(answer);
-  });
-});
-
-router.post('/confirmUser', function(req, res, next) {
-  let data = req.body;
-
-  if(
-    data.id === undefined || data.id === "" ||
-    data.passportId === undefined || data.passportId === ""
-  )
-    return res.send(errorGenerator.requireData());
-
-  sql.confirmUser(data, function (answer) {
-    res.send(answer);
-  });
-});
-
-router.post('/confirmDelivery', function(req, res, next) {
-  let data = req.body;
-
-  if(
-    data.id === undefined || data.id === "" ||
-    data.userId === undefined || data.userId === ""
-  )
-    return res.send(errorGenerator.requireData());
-
-  sql.deliveryProduct(data, function (answer) {
-    res.send(answer);
   });
 });
 

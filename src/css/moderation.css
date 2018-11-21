@@ -1,0 +1,39 @@
+/*
+color variants:
+	#4d5969
+*/
+
+.wrapper {
+    padding: unset;
+}
+.wrapper .center-align {
+    display: flex;
+    justify-content: unset;
+}
+.moderation__menu {
+    position: relative;
+    width: 250px;
+    display: inline-block;
+    flex-shrink: 0;
+    padding-top: 50px;
+    text-align: right;
+    border-right: 8px solid #0806220f;
+}
+.moderation__main-block {
+    width: 100%;
+    padding: 40px;
+}
+.moderation__menu-buttons {
+    padding: 15px;
+    border-right: 8px solid #ffffff00;
+    cursor: pointer;
+    font-size: 1.1em;
+    margin-right: -8px;
+}
+.moderation__menu-buttons:not(.active-buttons):hover {
+	border-color: #d4d4d4;
+}
+.active-buttons {
+    border-color: #080622;
+    font-weight: 900;
+}

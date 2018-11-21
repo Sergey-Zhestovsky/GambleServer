@@ -54,7 +54,7 @@ textarea:focus, input:focus, button:focus, img:focus {
 }
 .title {
 	display: flex;
-	height: 50px;
+	height: 60px;
 	white-space: nowrap;
 	flex-shrink: 0;
 }
@@ -65,6 +65,7 @@ textarea:focus, input:focus, button:focus, img:focus {
 }
 .title__logo {
 	height: inherit;
+	padding: 5px 0;
 }
 .title__logo-img {
 	height: inherit;

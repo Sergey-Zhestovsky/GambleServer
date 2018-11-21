@@ -1,103 +1,122 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <% include _layouts/header %>
-    <link rel='stylesheet' href='/css/account.css'/>
-    <link rel='stylesheet' href='/css/moderation.css'/>
+    <link rel='stylesheet' href='/css/account.css' />
+    <link rel='stylesheet' href='/css/moderation.css' />
+    <link rel='stylesheet' href='/css/moderation.css' />
 </head>
+
 <body>
-<% include _layouts/title %>
-<script type="text/javascript">
-    window.localization =  <%- JSON.stringify(text.page) %>;
-</script>
-<div class="wrapper">
-    <div class="accuont center-align">
-    	<div class="account__container-title" id="ownDevices"><%= text.page.usersConfirmation %></div>
-    	<div class="account__container">
-			<div class="account__container-table">
-    			<table class="account__table" id="userTable">
-    				<thead class="account__table-head">
-    					<tr>
-    						<td>№</td>
-    						<td><%= text.page.id %></td>
-    						<td><%= text.page.name %></td>
-    						<td><%= text.page.mail %></td>
-    						<td><%= text.page.account %></td>
-    						<td class="account__table-button-cell"><%= text.page.options %></td>
-    					</tr>
-    				</thead>
-    				<tbody class="account__table-body">
-    				</tbody>
-    			</table>
-    		</div>
-    	</div>
-<!--     	<div class="account__container-title" id="rentedDevices"><%= text.page.devicesRentConfirmation %></div>
-    	<div class="account__container">
-    		<div class="account__container-table">
-    			<table class="account__table" id="rentTable">
-    				<thead class="account__table-head">
-    					<tr>
-    						<td>№</td>
-    						<td><%= text.page.id %></td>
-    						<td><%= text.page.address %></td>
-    						<td><%= text.page.containerNumder %></td>
-    						<td class="account__table-button-cell"><%= text.page.options %></td>
-    					</tr>
-    				</thead>
-    				<tbody class="account__table-body">
-    				</tbody>
-    			</table>
-    		</div>
-    	</div> -->
-    	<div class="account__container-title" id="rentedDevices"><%= text.page.deliveryConfirmation %></div>
-    	<div class="account__container">
-    		<div class="account__container-table">
-    			<table class="account__table" id="deliveryTable">
-    				<thead class="account__table-head">
-    					<tr>
-    						<td>№</td>
-    						<td><%= text.page.id %></td>
-    						<td><%= text.page.address %></td>
-    						<td><%= text.page.containerNumder %></td>
-    						<td colspan="2"><%= text.page.options %></td>
-    					</tr>
-    				</thead>
-    				<tbody class="account__table-body">
-    				</tbody>
-    			</table>
-    		</div>
-    	</div>
+    <% include _layouts/title %>
+    <script type="text/javascript">
+    window.localization = <%- JSON.stringify(text.page) %>;
+    </script>
+    <div class="wrapper">
+        <div class="center-align">
+            <div class="moderation__menu">
+                <div class="moderation__menu-buttons active-buttons">Product types</div>
+                <div class="moderation__menu-buttons">Products</div>
+                <div class="moderation__menu-buttons">Users</div>
+            </div>
+            <div class="moderation__main-block">
+                <div class="account__container-title" id="ownDevices">
+                    <%= text.page.usersConfirmation %>
+                </div>
+                <div class="account__container">
+                    <div class="account__container-table">
+                        <table class="account__table" id="userTable">
+                            <thead class="account__table-head">
+                                <tr>
+                                    <td>№</td>
+                                    <td>
+                                        <%= text.page.id %>
+                                    </td>
+                                    <td>
+                                        <%= text.page.name %>
+                                    </td>
+                                    <td>
+                                        <%= text.page.mail %>
+                                    </td>
+                                    <td>
+                                        <%= text.page.account %>
+                                    </td>
+                                    <td class="account__table-button-cell">
+                                        <%= text.page.options %>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody class="account__table-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="account__container-title" id="rentedDevices">
+                    <%= text.page.deliveryConfirmation %>
+                </div>
+                <div class="account__container">
+                    <div class="account__container-table">
+                        <table class="account__table" id="deliveryTable">
+                            <thead class="account__table-head">
+                                <tr>
+                                    <td>№</td>
+                                    <td>
+                                        <%= text.page.id %>
+                                    </td>
+                                    <td>
+                                        <%= text.page.address %>
+                                    </td>
+                                    <td>
+                                        <%= text.page.containerNumder %>
+                                    </td>
+                                    <td colspan="2">
+                                        <%= text.page.options %>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody class="account__table-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-<div class="screen-wrapper" id="editBlockWrapper"></div>
-<div class="edit-product" id="editBlock">
-	<div class="edit-product__back" id="editBlockBack"><i class="fas fa-chevron-left"></i> <span class="edit-product__back-text">back</span></div>
-	<div class="edit-product__title"><%= text.page.usersConfirmation %></div>
-	<div class="edit-product__form">
-		<label class="edit-product__form-label">
-			<span class="edit-product__form-label-title"><%= text.page.id %></span>
-			<span class="edit-product__form-label-value" id="editFieldId"></span> 
-		</label>
-		<label class="edit-product__form-label">
-			<span class="edit-product__form-label-title"><%= text.page.name %></span>
-			<span class="edit-product__form-label-value" id="editFieldName"></span> 
-		</label>
-		<label class="edit-product__form-label">
-			<span class="edit-product__form-label-title"><%= text.page.mail %></span>
-			<span class="edit-product__form-label-value" id="editFieldMail"></span> 
-		</label>
-		<br class="edit-product__br"/>
-		<label class="edit-product__form-label">
-			<span class="edit-product__form-label-title"><%= text.page.passportId %></span>
-			<input class="edit-product__form-field" type="text" id="editFieldPasspordId">
-		</label>
-	</div>
-	<div class="edit-product__form-button-block">
-		<div class="edit-product__form-button" id="editBlockSubmit"><%= text.page.confirm %></div>
-	</div>
-</div>
-<% include _layouts/footer %>
+    <div class="screen-wrapper" id="editBlockWrapper"></div>
+    <div class="edit-product" id="editBlock">
+        <div class="edit-product__back" id="editBlockBack"><i class="fas fa-chevron-left"></i> <span class="edit-product__back-text">back</span></div>
+        <div class="edit-product__title">
+            <%= text.page.usersConfirmation %>
+        </div>
+        <div class="edit-product__form">
+            <label class="edit-product__form-label">
+                <span class="edit-product__form-label-title"><%= text.page.id %></span>
+                <span class="edit-product__form-label-value" id="editFieldId"></span>
+            </label>
+            <label class="edit-product__form-label">
+                <span class="edit-product__form-label-title"><%= text.page.name %></span>
+                <span class="edit-product__form-label-value" id="editFieldName"></span>
+            </label>
+            <label class="edit-product__form-label">
+                <span class="edit-product__form-label-title"><%= text.page.mail %></span>
+                <span class="edit-product__form-label-value" id="editFieldMail"></span>
+            </label>
+            <br class="edit-product__br" />
+            <label class="edit-product__form-label">
+                <span class="edit-product__form-label-title"><%= text.page.passportId %></span>
+                <input class="edit-product__form-field" type="text" id="editFieldPasspordId">
+            </label>
+        </div>
+        <div class="edit-product__form-button-block">
+            <div class="edit-product__form-button" id="editBlockSubmit">
+                <%= text.page.confirm %>
+            </div>
+        </div>
+    </div>
+    <% include _layouts/footer %>
 </body>
 <script async defer type="text/javascript" src="/js/formValidator.js"></script>
 <script async defer type="text/javascript" src="/js/page/moderation.js"></script>
+
 </html>
