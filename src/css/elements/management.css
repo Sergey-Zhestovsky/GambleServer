@@ -1,0 +1,296 @@
+.custom-select {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    width: max-content;
+    margin: 0 8px;
+    color: #080622;
+}
+.select-styled {
+    position: relative;
+    padding: 4px 32px 4px 15px;
+    background-color: #e7e7e9;
+    z-index: 2;
+    transition: all .125s;
+}
+.select-styled:after {
+    content: "";
+    width: 0;
+    height: 0;
+    border: 7px solid transparent;
+   	border-top-color: inherit;
+    position: absolute;
+    top: calc(50% + 4px);
+    right: 10px;
+    transform: translate(0, -50%);
+    transition: transform .125s;
+    transform-origin: 50% 0%;
+}
+.select-options {
+    z-index: 1;
+    height: 0;
+    opacity: 1;
+    transform: translate(0, 0);
+    transition: all .125s;
+}
+.select-options li {
+    padding: 4px 32px 4px 15px;
+    background: #e7e7e9;
+    transition: all .125s ease-in-out;
+}
+.select-options li:first-child {
+	border-top: none;
+}
+.select-options li:hover {
+    background: #d4d4d4;
+}
+.select-options.hide {
+	visibility: hidden;
+    opacity: 0;
+    transform: translate(0, -5px);
+}
+.select-styled.active,
+.select-styled:hover {
+	background: #080622;
+	color: #f5f5f5;
+}
+.select-styled.active:after {
+	transform: rotate(180deg);
+}
+
+.item-table_header-title {
+    font-size: 1.75em;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+.item-table_view-setting {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    margin-bottom: 10px;
+}
+.item-table_view-anount,
+.item-table_view-pages,
+.item-table_add-button {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.item-table_add-button {
+    padding: 4px 10px;
+    border: 2px solid #080622;
+    cursor: pointer;
+    transition: all .125s;
+}
+.item-table_add-button:hover {
+    background: #080622;
+    color: whitesmoke;
+}
+.item-table_page-button {
+    padding: 6px;
+    min-width: 30px;
+    text-align: center;
+}
+.item-table_page-button.page-view {
+    color: #ababab;
+}
+.item-table_page-button.page-button {
+    background: #e7e7e9;
+    cursor: pointer;
+}
+.item-table_page-button.page-button:hover {
+    background: #d4d4d4;
+}
+.item-table_page-button.page-current {
+    background: #080622;
+    color: whitesmoke;
+}
+.item-table_page-button:first-child {
+    margin-right: 2px;
+}
+.item-table_page-button:last-child {
+    margin-left: 2px;
+}
+.table-block {
+    width: 100%;
+    border-top: 1px solid #e7e7e9;
+    border-collapse: collapse;
+}
+.table-block td {
+    white-space: nowrap;
+    min-width: 35px;
+    padding: 12px 0px;
+}
+.table-block_min-width {
+    width: 1px;
+}
+.table-block_center {
+    text-align: center;
+}
+.table-block_header {
+    text-transform: uppercase;
+    font-size: 1.15em;
+    color: #ababab;
+}
+.table-block_header td {
+    padding: 20px 0;
+}
+.item-table_button {
+    background: #e7e7e9;
+    padding: 5px 12px;
+    cursor: pointer;
+    display: inline-block;
+    transition: all .125s;
+}
+.item-table_button:hover {
+    background: #080622;
+    color: whitesmoke;
+}
+@media only screen and (max-width: 900px) {
+    .table-block,
+    .table-block tbody, 
+    .table-block th, 
+    .table-block td, 
+    .table-block tr { 
+        display: block; 
+    }
+    .table-block td.responsive-hide,
+    .table-block_header {
+        display: none;
+    }
+    .table-block tr {
+        margin: 15px 0;
+        border-bottom: 1px solid #e7e7e9;
+    }
+    .table-block_min-width.table-block_center {
+        width: inherit;
+    }
+    .table-block td {
+        padding: 10px 0;
+    }
+    .table-block td[data-title]:before { 
+        content: attr(data-title) ": ";
+        text-transform: capitalize;
+        font-weight: 600;
+    }
+}
+
+.screen-wrapper {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.2);
+    z-index: 100;
+}
+.popup-form-wrapper {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    @display: flex;
+    justify-content: center;
+    overflow: auto;
+    background: rgba(0,0,0,.2);
+    cursor: pointer;
+}
+.popup-form {
+    position: relative;
+    align-self: center;
+    background: #F5F5F5;
+    max-height: 100vh;
+    max-width: 700px;
+    overflow-y: auto;
+    z-index: 101;
+    min-width: 400px;
+    margin: 10px 0;
+    width: 90vw;
+    min-height: 600px;
+    box-shadow: 0 7px 30px -5px #00000061;
+    cursor: auto;
+}
+.popup-form_center {
+    padding: 12px 30px;
+}
+.popup-form_header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.35em;
+    font-weight: 600;
+    background: #080622;
+    color: whitesmoke;
+    -webkit-backface-visibility: hidden;
+}
+.popup-form_header-close i {
+    cursor: pointer;
+    transition: all .125s;
+}
+.popup-form_header-close i:hover {
+    transform: rotate(90deg);
+}
+@media only screen and (max-height: 600px) {
+    .popup-form {
+        align-self: unset;
+    }
+}
+.popup-form_body {
+    width: 100%;
+    height: 85vh;
+    display: flex;
+    overflow-x: hidden;
+}
+.popup-form_body-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    font-size: 1.2em;   
+}
+.popup-form_body-container-title {
+    text-align: center;
+    margin: 25px 0;
+    font-size: 1.55em;
+}
+.popup-form_body-container-label {
+    display: flex;
+    justify-content: space-between;
+    margin: 1em 0;
+    align-items: center;
+}
+.popup-form_body-container-label-title {
+    padding: 0 10px;
+    vertical-align: middle;
+}
+.popup-form_body-container-form {
+    display: inline-block;
+    text-align: center;
+}
+.popup-form_body-container-label-input {
+    background: inherit;
+    border: 1px solid #ababab;
+    padding: 2px 5px;
+    transition: all .125s;
+}
+.popup-form_body-container-label-input:focus {
+    border-color: #080622;
+}
+.popup-form_body-container-submit {
+    display: inline-block;
+    margin: 25px 0;
+    border: 2px solid;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all .125s;
+}
+.popup-form_body-container-submit:hover {
+    background: #080622;
+    color: whitesmoke;
+}

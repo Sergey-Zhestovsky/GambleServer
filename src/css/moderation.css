@@ -1,6 +1,10 @@
 /*
 color variants:
 	#4d5969
+
+    #c0392b
+    #962d22
+    #ab3326
 */
 
 .wrapper {
@@ -12,7 +16,7 @@ color variants:
 }
 .moderation__menu {
     position: relative;
-    width: 250px;
+    max-width: 250px;
     display: inline-block;
     flex-shrink: 0;
     padding-top: 50px;
@@ -21,7 +25,7 @@ color variants:
 }
 .moderation__main-block {
     width: 100%;
-    padding: 40px;
+    padding: 40px 60px;
 }
 .moderation__menu-buttons {
     padding: 15px;
