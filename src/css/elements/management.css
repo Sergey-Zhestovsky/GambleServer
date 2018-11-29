@@ -1,3 +1,7 @@
+.show-block {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
 .custom-select {
     cursor: pointer;
     display: inline-block;
@@ -76,11 +80,21 @@
     align-items: center;
     margin-bottom: 10px;
 }
+.item-table_view-anount,
+.item-table_view-pages {
+    width: 50%;
+    min-width: fit-content;
+}
+.item-table_view-pages {
+    justify-content: flex-end;
+}
 .item-table_add-button {
     padding: 4px 10px;
     border: 2px solid #080622;
     cursor: pointer;
     transition: all .125s;
+    margin-left: 15px;
+    margin-right: 15px; 
 }
 .item-table_add-button:hover {
     background: #080622;
@@ -186,18 +200,21 @@
     z-index: 100;
 }
 .popup-form-wrapper {
-    display: none;
+    visibility: hidden;
+    opacity: 0;
+
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 100;
-    @display: flex;
+    display: flex;
     justify-content: center;
     overflow: auto;
     background: rgba(0,0,0,.2);
     cursor: pointer;
+    transition: all .125s;
 }
 .popup-form {
     position: relative;
@@ -263,6 +280,8 @@
     justify-content: space-between;
     margin: 1em 0;
     align-items: center;
+    position: relative;
+    overflow: hidden;
 }
 .popup-form_body-container-label-title {
     padding: 0 10px;
@@ -272,11 +291,32 @@
     display: inline-block;
     text-align: center;
 }
+.popup-form_error-block {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: 2.8em;
+    text-rendering: auto;
+    right: -.3em;
+    transform: rotate(21deg);
+    color: #900000;
+    z-index: -1;
+    transition: all .1s ease-in-out;
+}
+.popup-form_error-block:after {
+    content: "\f071";
+}
+.popup-form_error-show {
+    visibility: visible;
+    opacity: 1;
+}
 .popup-form_body-container-label-input {
+    width: 260px;
     background: inherit;
     border: 1px solid #ababab;
-    padding: 2px 5px;
-    transition: all .125s;
+    padding: 4px 5px;
+    transition: border-color .125s, padding-right .125s;
 }
 .popup-form_body-container-label-input:focus {
     border-color: #080622;
@@ -284,7 +324,7 @@
 .popup-form_body-container-submit {
     display: inline-block;
     margin: 25px 0;
-    border: 2px solid;
+    border: 2px solid #080622;
     padding: 10px 20px;
     font-size: 1.1em;
     cursor: pointer;
@@ -293,4 +333,8 @@
 .popup-form_body-container-submit:hover {
     background: #080622;
     color: whitesmoke;
+}
+.popup-form_error {
+    border-color: #900000 !important;
+    padding-right: 2.4em;
 }

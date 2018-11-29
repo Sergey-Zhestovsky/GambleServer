@@ -20,7 +20,7 @@ function authorisation(options) {
         password: fields.password.val()
       },
       option = {
-        mail: ["required", "email"],
+        mail: ["required"],
         password: ["required"]
       },
       result = new formValidator().validate(data, option);
