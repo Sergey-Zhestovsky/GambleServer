@@ -1,5 +1,4 @@
 let app = require('../app'),
-    androidApp = require('../androidApp'),
     config = require('../config'),
     http = require('http');
 
