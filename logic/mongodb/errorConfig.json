@@ -5,6 +5,20 @@
 	"getUser": {
 		"custom001": "no such user"
 	},
+	"editProductType": {
+		"custom002": "the object has not changed",
+		"custom003": "object not found"
+	},
+	"deleteProduct": {
+		"custom003": "object not found",
+		"custom004": "object not deleted"
+	},
+	"tablesDataManager": {
+		"custom005": "wrong url request"
+	},
+	"userDeviceManager": {
+		"custom005": "wrong url request"
+	},
 	"default": {
 		"11000": "duplicate required values"
 	}
