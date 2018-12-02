@@ -1,15 +1,46 @@
 'use strict';
 
+import CustomDropDownSelector from '/js/module/customSelector.js';
+
 export default class PopupForm {
-	constructor({title, block, validate, succes, schema}) {
+	constructor({title, block, validate, succes, schema, relatedData}) {
 		this.title = title;
 		this.block = block;
 		this.validate = (validate && validate.func) ? validate : false;
 		this.succes = succes;
 		this.schema = schema;
+		this.relatedData = relatedData;
 
 		this.initialObject;
 		this.succesCallBack;
+
+		this.createForm();
+	}
+
+	createForm() {
+		for(let field of this.schema)
+			switch (field.type) {
+				case "select":
+					createSelectFiald(field, this.schema, this.relatedData);
+					break;
+				default:
+					break;
+			}
+
+		function createSelectFiald(schemaField, schema, source) {
+			let keyStep = [], dataStep = [];
+
+			for(let data of source[schemaField.name]) {
+				keyStep.push( data[schemaField.selectorConfig.key] );
+				dataStep.push( data[schemaField.selectorConfig.value] );	
+			}
+
+			schemaField.selector = new CustomDropDownSelector({
+				block: $(schemaField.field),
+				dataStep,
+				keyStep
+			});
+		}
 	}
 
 	open(action, object, cb = object) {
@@ -36,13 +67,16 @@ export default class PopupForm {
 
 	openEdit(object) {
 		for(let value of this.schema) {
-			fillField(value.type, $(value.field), object[value.name])
+			fillField(value.type, $(value.field), object[value.name], value);
 		}
 
-		function fillField(type, field, data) {
+		function fillField(type, field, data, schemaField) {
 			switch (type) {
 				case "input":
 					field.val(data)
+					break;
+				case "select":
+					schemaField.selector.getSetValue( data[schemaField.selectorConfig.key],  data[schemaField.selectorConfig.value])
 					break;
 				default:
 					break;
@@ -54,13 +88,15 @@ export default class PopupForm {
 		this.block.addClass("show-block");
 	}
 
-	hide() {
+	hide(cb = () => {}) {
+		const delay = 125;
 		this.block.removeClass("show-block");
+		setTimeout(cb, delay);
 	}
 
 	clear() {
 		for(let value of this.schema) {
-			clearField(value.type, $(value.field))
+			clearField(value.type, $(value.field), value)
 		}
 
 		this.initialObject = undefined;
@@ -69,10 +105,13 @@ export default class PopupForm {
 		if (this.validate)
 			this.removeErrors();
 
-		function clearField(type, field) {
+		function clearField(type, field, schema) {
 			switch (type) {
 				case "input":
 					field.val("")
+					break;
+				case "select":
+					schema.selector.setDefault();
 					break;
 				default:
 					break;
@@ -95,8 +134,9 @@ export default class PopupForm {
 		                    key.off("click", value);
 		                }
 		                eventList.clear();
-		                this.clear();
-		                this.hide();
+		                this.hide(() => {
+		                	this.clear();
+		                });
 		                activeState = false;
 		            }
 		        }
@@ -120,6 +160,9 @@ export default class PopupForm {
 			options = {},
 			result;
 
+		if ( equalObject(this.initialObject, obj, this.schema) )
+			return true;
+
 		for(let value of this.schema) {
 			if (value.validation)
 				options[value.name] = value.validation;
@@ -140,19 +183,44 @@ export default class PopupForm {
 		}
 
 		return true;
+
+		function equalObject(mainObject = {}, object, schema) {
+			let result = true;
+
+			for(let field of schema) {
+				switch (field.type) {
+					case "input":
+						result &= mainObject[field.name] == object[field.name];
+						break;
+					case "select":
+						result &= mainObject[field.name] && mainObject[field.name][field.selectorConfig.key] == object[field.name];
+						break;
+					default:
+						break;
+				}
+			}
+
+			return result;
+		}
 	}
 
 	getObject(obj = {}) {
+		let temp = {}; 
+		Object.assign(temp, obj);
+		
 		for(let value of this.schema) {
-			obj[value.name] = getField(value.type, $(value.field))
+			temp[value.name] = getField(value.type, $(value.field), value)
 		}
 
-		return obj;
+		return temp;
 
-		function getField(type, field) {
+		function getField(type, field, schema) {
 			switch (type) {
 				case "input":
 					return field.val()
+					break;
+				case "select":
+					return schema.selector.getSetValue();
 					break;
 				default:
 					break;
@@ -163,25 +231,25 @@ export default class PopupForm {
 	errorHandler(error) { 
 		for(let value of this.schema) {
 			if(error[value.name])
-				this.setError( $(value.field),  $(value.field).siblings(".popup-form_error-block") );
+				this.setError( $(value.field),  $(value.field).siblings(".popup-form_error-block"), value.type);
 			else
-				this.removeError( $(value.field),  $(value.field).siblings(".popup-form_error-block") );
+				this.removeError( $(value.field),  $(value.field).siblings(".popup-form_error-block"), value.type);
 		}
 	}
 
-	setError(field, errorBlock) {
+	setError(field, errorBlock, type) {
 		field.addClass("popup-form_error");
 		errorBlock.addClass("show-block");
 	}
 
-	removeError(field, errorBlock) { 
+	removeError(field, errorBlock, type) { 
 		field.removeClass("popup-form_error");
 		errorBlock.removeClass("show-block");
 	}
 
 	removeErrors() {
 		for(let value of this.schema) {
-			this.removeError($(value.field), $(value.field).siblings(".popup-form_error-block"));
+			this.removeError($(value.field), $(value.field).siblings(".popup-form_error-block"), value.type);
 		}
 	}
 }

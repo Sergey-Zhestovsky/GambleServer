@@ -2,7 +2,7 @@
 
 export default class customdropDownSelector {
 
-    constructor({ block, activeClass = "active", dataStep }) {
+    constructor({ block, activeClass = "active", dataStep, keyStep}) {
         this.block = block;
         this.activeClass = activeClass;
         this.styledSelect = block.find('.select-styled');
@@ -10,6 +10,7 @@ export default class customdropDownSelector {
         this.selectedData;
         this.subscribeStack = new Set();
         this.dataStep = dataStep;
+        this.keyStep = keyStep;
 
         this.create();
     }
@@ -25,7 +26,7 @@ export default class customdropDownSelector {
         });
 
         if (this.styledSelect.text() == "")
-            this.getSetValue(this.list.find("li").get(0).val)
+            this.setDefault();
 
         this.styledSelect.click((e) => {
             if (this.isOpen())
@@ -46,7 +47,7 @@ export default class customdropDownSelector {
             if (current.val === this.getSetValue())
                 return;
             
-            this.getSetValue(current.val);
+            this.getSetValue(current.val, current.textContent);
             this.selectedData = current.val;
 
             for (let cb of this.subscribeStack) {
@@ -55,11 +56,17 @@ export default class customdropDownSelector {
         });
     }
 
+    setDefault() {
+        let first = this.list.find("li").get(0);
+        
+        this.getSetValue(first.val, first.textContent)
+    }
+
     generateList() {
         let html = '';
 
         for (let i = 0; i < this.dataStep.length; i++) {
-            html += `<li val="${this.dataStep[i]}">${this.dataStep[i]}</li>`
+            html += `<li val="${ this.keyStep ? this.keyStep[i] : this.dataStep[i] }">${this.dataStep[i]}</li>`
         }
 
         this.list.html(html);
@@ -79,12 +86,12 @@ export default class customdropDownSelector {
         return this.styledSelect.hasClass('active');
     }
 
-    getSetValue(value) {
-        if (!value)
+    getSetValue(key, value) {
+        if (!key || !value)
             return this.selectedData;
 
-        this.selectedData = value;
-        this.styledSelect.text(this.selectedData);
+        this.selectedData = key;
+        this.styledSelect.text(value);
     }
 
     subscribe(cb) {

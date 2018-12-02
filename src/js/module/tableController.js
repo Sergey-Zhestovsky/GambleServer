@@ -1,24 +1,26 @@
 'use strict';
 
-import CustomdropDownSelector from '/js/module/customSelector.js';
+import CustomDropDownSelector from '/js/module/customSelector.js';
 import PageController from '/js/module/pageController.js';
 import PopupForm from '/js/module/popupForm.js';
 
 export default class TableController {
-    constructor ({selector, pages, editForm, block, addButton = false, schema, generalDataLength, data}) {
+    constructor ({selector, pages, editForm, block, loader, addButton = false, schema, dbLength = 0, data = []}) {
         this.selector = selector;
         this.pages = pages;
         this.editForm = editForm;
         this.block = block;
+        this.loader = loader;
         this.addButton = addButton;
         this.schema = schema;
-        this.generalDataLength = generalDataLength;
+        this.dbLength = dbLength;
         this.data = data;
 
-        this.SelectorBlock = new CustomdropDownSelector(this.selector);
+        this.SelectorBlock = new CustomDropDownSelector(this.selector);
         this.pages.maxPages = this.calculatePages();
         this.PageControllerBlock = new PageController(this.pages);
-        this.PopupFormBlock = new PopupForm(this.editForm);
+        if (this.editForm)
+            this.PopupFormBlock = new PopupForm(this.editForm);
 
         this.eventListner = new Map();
         this.setSelectorEvent();
@@ -31,10 +33,16 @@ export default class TableController {
         this.createHead();
         this.createBody();
         this.setAddEvent();
+
+        this.triggerTableCreate();
     }
 
-    calculatePages() {
-        return Math.ceil( this.generalDataLength / this.SelectorBlock.getSetValue() );
+    calculatePages(length = this.dbLength, step = this.SelectorBlock.getSetValue()) {
+        return Math.ceil(length / step);
+    }
+
+    calculatePadding(length = this.SelectorBlock.getSetValue(), page = this.PageControllerBlock.CurrentPosition) {
+        return (page - 1) * length;
     }
 
     createHead () {
@@ -52,12 +60,29 @@ export default class TableController {
         head.html(html);
     }
 
+    getRelatedData(object, path) {
+        if(!Array.isArray(path))
+            return object[path];
+
+        let result = object;
+
+        for(let el of path) {
+            result = result[el] || "";
+        }
+
+        return result;
+    }
+
     createBody(data) {
         this.block.find("tbody").html( this.generateBody(data) );
     }
 
     addToBody(data) {
-        this.block.find("tbody").prepend( this.generateBody([data]) );
+        this.block.find("tbody").append( this.generateBody([data]) );
+    }
+
+    deleteFromBody(data) {
+        data.remove();
     }
 
     updateBody(target, object) {
@@ -65,7 +90,7 @@ export default class TableController {
 
         for(let i = 0; i < schema.length; i++) {
             if (schema[i].relatedData) {
-                target.find(`td:eq(${i})`).text(object[schema[i].relatedData]);
+                target.find(`td:eq(${i})`).text( this.getRelatedData(object, schema[i].relatedData) );
             }
         }
     }
@@ -74,7 +99,26 @@ export default class TableController {
         if (data === undefined || data.length === 0)
             return;
 
-        let linkVariableName = "relatedElement";
+        let linkVariableName = "relatedElement",
+            setValue = (element, index, column, schema) => {
+                if (column.autoIncrement)
+                    return index + 1;
+
+                if (column.buttons) {
+                    let temp = "";
+
+                    for (let i = 0; i < column.buttons.length; i++) {
+                        let buttonLink = schema.buttons[column.buttons[i]];
+
+                        temp += `<div class="${buttonLink.class}" data-action="${buttonLink.action}">${buttonLink.name}</div>`;
+                    }
+
+                    return temp;
+                }
+
+                if (column.relatedData)
+                    return this.getRelatedData(element, column.relatedData);
+            };
 
         if (this.block.find("tbody").length == 0) {
             this.block.html("<tbody></tbody>");
@@ -94,38 +138,18 @@ export default class TableController {
                 html += `<td class="${
                     column.class || ""
                 }" ${
-                    column.relatedData ? `data-title="${column.relatedData}"` : ""
+                    column.relatedData ? `data-title="${column.value}"` : ""
                 }>${
                     setValue(element, i, column, this.schema)
                 }</td>`;
             }
 
             tr.innerHTML = html;
-            this.setEditEvent($(tr), "data-action", linkVariableName)
+            this.setBtnEvent($(tr), "data-action", linkVariableName)
             fragment.appendChild(tr);
         }
 
         return fragment;
-
-        function setValue(element, index, column, schema) {
-            if (column.autoIncrement)
-                return index + 1;
-
-            if (column.buttons) {
-                let temp = "";
-
-                for (let i = 0; i < column.buttons.length; i++) {
-                    let buttonLink = schema.buttons[column.buttons[i]];
-
-                    temp += `<div class="${buttonLink.class}" data-action="${buttonLink.action}">${buttonLink.name}</div>`;
-                }
-
-                return temp;
-            }
-
-            if (column.relatedData)
-                return element[column.relatedData]
-        }
     }
 
     normalizeTable() {
@@ -153,6 +177,16 @@ export default class TableController {
         }
     }
 
+    triggerGetEvent(length, padding, cb) {
+        let event = "get";
+
+        if (!this.eventListner.has(event))
+            return;
+
+        this.block.addClass("loading");
+        this.triggerEvent(event, {length, padding}, cb);
+    }
+
     setAddEvent() {
         if (!this.addButton) 
             return;
@@ -169,29 +203,49 @@ export default class TableController {
          });
     }
 
-    setEditEvent(block, selector, variable) {
+    setBtnEvent(block, selector, variable) {
         let popupFormEventHandler = (event) => {
-            let obj = Object.create(null),
-                action = event.target.dataset.action;
+            let action = event.target.dataset.action;
 
-            Object.assign(obj, event.delegateTarget[variable]);
-
-            this.PopupFormBlock.open(action, obj, (error, answer) => {
-                if (error)
-                    return false;
-
-                this.triggerEvent("edit", answer, (...args) => {
-                    this.editEventCallBack(...args, event.delegateTarget, variable);
-                });
-            });
+            switch (action) {
+                case "edit":
+                    this.setEditHandler(event, action, variable);
+                    break;
+                case "delete":
+                    this.setDeleteHandler(event, variable);
+                    break;
+                default:
+                    break;
+            }
         };
 
         block.on("click", `[${selector}]`, popupFormEventHandler);   
     }
 
+    setEditHandler(event, action, variable) {
+        let obj = Object.create(null);
+
+        Object.assign(obj, event.delegateTarget[variable]);
+
+        this.PopupFormBlock.open(action, obj, (error, answer) => {
+            if (error)
+                return false;
+
+            this.triggerEvent("edit", answer, (...args) => {
+                this.editEventCallBack(...args, event.delegateTarget, variable);
+            });
+        });
+    }
+
+    setDeleteHandler(event, variable) {
+        this.triggerEvent("delete", event.delegateTarget[variable], (...args) => {
+            this.deleteEventCallBack(...args, event.delegateTarget);
+        });
+    }
+
     setSelectorEvent() {
         this.SelectorBlock.subscribe((length) => {
-            this.triggerEvent("get", length, this.PageControllerBlock.CurrentPosition, (...args) => {
+            this.triggerGetEvent(length, this.calculatePadding(length, this.calculatePages(undefined, length)), (...args) => {
                 this.getEventCallBack(...args);
                 this.PageControllerBlock.setPageBlock(undefined, this.calculatePages());
             });
@@ -200,7 +254,7 @@ export default class TableController {
 
     setPageEvent() {
         this.PageControllerBlock.subscribe((page, cb) => {
-            this.triggerEvent("get", this.SelectorBlock.getSetValue(), page, (error, result = {}) => {
+            this.triggerGetEvent(this.SelectorBlock.getSetValue(), this.calculatePadding(undefined, page), (error, result = {}) => {
                 if (error) {
                     this.getEventCallBack(error);
                     cb(error);
@@ -214,10 +268,12 @@ export default class TableController {
     }
 
     getEventCallBack(error, result = {}) {
+        this.block.removeClass("loading");
+
         if (error || result.dbLength === undefined)
             return false;
 
-        this.generalDataLength = result.dbLength;
+        this.dbLength = result.dbLength;
         this.createBody(result.data);
     }
 
@@ -225,7 +281,7 @@ export default class TableController {
         if (error)
             return false;
 
-        this.generalDataLength += 1;
+        this.dbLength += 1;
         this.addToBody(result);
         this.normalizeTable();
     }
@@ -233,6 +289,23 @@ export default class TableController {
     editEventCallBack(error, result = {}, block, variable) {
         block[variable] = result;
         this.updateBody($(block), result);
+    }
+
+    deleteEventCallBack(error, result = {}, block) {
+        if (error)
+            return false;
+
+        this.dbLength -= 1;
+        this.deleteFromBody(block);
+        this.normalizeTable();
+    }
+
+    triggerTableCreate() {
+        if (!this.loader)
+            return;
+
+        this.loader.wrapperLoader.addClass("loaded");
+        this.loader.wrapperTable.addClass("loaded");
     }
 
     on(event, func) {

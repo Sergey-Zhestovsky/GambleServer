@@ -3,7 +3,7 @@
 export default class PageController {
     constructor({block, maxPages, schema = {}, buttonExpansion = 1, currentPosition = 1}) {
         this.block = block;
-        this.maxPages = maxPages;
+        this.maxPages = Math.max(maxPages, 1);
         this.schema = {};
         ({
             previous: this.schema.previous = {},
@@ -46,8 +46,6 @@ export default class PageController {
             this.goto = Number($(this).attr("data-goto"));
         });
     }
-
-
 
     setListner () {
         let goTo;
