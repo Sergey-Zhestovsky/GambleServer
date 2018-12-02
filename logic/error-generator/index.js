@@ -2,63 +2,99 @@ let translate = require('../language').getErrorTranslate;
 
 function errorGenerator() {
 
-  this.create = (title, message, result = []) => {
-    return {
-      error: {
-        title: title,
-        message: message
-      },
-      result: result
-    }
-  };
-  this.accessError = (result) => {
-    return this.create("accessError", "Request don't have appropriate access level.", result);
-  };
-  this.requireData = (result) => {
-    return this.create("requireDataError", "The request don't have appropriate variables.", result);
-  };
-  this.dataBaseCriticalError = (result) => {
-    return this.create("dataBaseCriticalError", "Database request don't work properly.", result);
-  };
-  this.loginError = (language, result) => {
-    let title = "loginError"
-    return this.create(title, translate(language, title), result);
-  };
-  this.registrationError = (language, result) => {
-    let title = "registrationError"
-    return this.create(title, translate(language, title), result);
-  };
-  this.redisError = (error, result) => {
-    return this.create("redisError", error, result);
-  };
-  this.notEnoughMoney = (result) => {
-    return this.create("notEnoughMoney", "Your account is too low.", result);
-  };
-  this.selfRent = (result) => {
-    return this.create("selfRent", "Your can't rent your oun device.", result);
-  };
-  this.middlewareError = (result) => {
-    return this.create("middlewareError", "Page not found.", result);
-  };
-  this.userSaltError = (result) => {
-    return this.create("userSaltError", "Missing option variable: salt.", result);
-  };
-  this.mongodbError = (req, error) => {
-    switch (error.describe) {
-      case 'existing email':
-        return this.registrationError(req.data.language);
-        break;
-      case 'no such user':
-        return this.loginError(req.data.language);
-        break;
-      default:
-        if (req.app.get('env') === 'development')
-          return this.create("mongodbError", error);
-        else 
-          return this.create("mongodbError");
-        break;
-    }
-  };
+    this.create = (error, result = []) => {
+        return {
+            error,
+            result
+        }
+    };
+
+    this.accessError = (result) => {
+        let error = {
+            type: "AccessError",
+            message: "Request don't have appropriate access level.",
+            code: 100
+        }
+
+        return this.create(error, result);
+    };
+
+    this.requireData = (result) => {
+        let error = {
+            type: "RequireDataError",
+            message: "The request don't have appropriate variables.",
+            code: 101
+        }
+        
+        return this.create(error, result);
+    };
+
+    this.dataBaseCriticalError = (result) => {
+        let error = {
+            type: "DataBaseCriticalError",
+            message: "Database request don't work properly.",
+            code: 102
+        }
+        
+        return this.create(error, result);
+    };
+
+    this.loginError = (language, result) => {
+        let error = {
+            type: "LoginError",
+            message: translate(language, "loginError"),
+            code: 103
+        }
+        
+        return this.create(error, result);
+    };
+
+    this.registrationError = (language, result) => {
+        let error = {
+            type: "RegistrationError",
+            message: translate(language, "registrationError"),
+            code: 104
+        }
+        
+        return this.create(error, result);
+    };
+
+    this.middlewareError = (result) => {
+        let error = {
+            type: "MiddlewareError",
+            message: "Page not found.",
+            code: 105
+        }
+        
+        return this.create(error, result);
+    };
+
+    this.mongodbError = (req, error) => {
+        switch (error.describe) {
+            case 'existing email':
+                return this.registrationError(req.data.language);
+                break;
+            case 'no such user':
+                return this.loginError(req.data.language);
+                break;
+            default:
+                return setError(req.app.get('env'), error);
+                break;
+        }
+
+        function setError(env, result) {
+            let error = {
+                type: "MongodbError",
+                message: "Server API error",
+                code: 106
+            };
+
+            if (env === 'development')
+                error.message = result;
+
+            return this.create(error);
+        }
+    };
 }
 
 module.exports = new errorGenerator();
