@@ -1,174 +1,115 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <% include _layouts/header %>
-    <link rel='stylesheet' href='/css/account.css'/>
-    <script src="/socket.io/socket.io.js"></script>
+    <link rel='stylesheet' href='/css/elements/management.css' />
+    <link rel='stylesheet' href='/css/account.css' />
 </head>
+
 <body>
-<% include _layouts/title %>
-<script type="text/javascript">
-    window.localization =  <%- JSON.stringify(text.page) %>;
-</script>
-<div class="wrapper">
-    <div class="accuont center-align">
-        <div class="account__container-title" id="profile"><%= text.page.userInformation %></div>
-        <div class="account__container" id="profileContainer">
-            <div class="account__profile">
-                    <span class="account__profile-title"><%= text.page.fullName %></span>
-                    <span class="account__profile-value"><%= userData.user_name %></span>
-                    <span class="account__profile-title"><%= text.page.mail %></span>
-                    <span class="account__profile-value"><%= userData.user_mail %></span>
-                    <span class="account__profile-title"><%= text.page.account %></span>
-                    <span class="account__profile-value account-value" id="accountData"><%= userData.user_account %></span>
+    <% include _layouts/title %>
+    <script type="text/javascript">
+    window.localization = <%- JSON.stringify(text.page) %>;
+    </script>
+    <main class="wrapper">
+        <div class="center-align">
+            <div class="account_container">
+                <div class="account_container-title" data-text="Personal information">Personal information</div>
+                <div class="account_information">
+                    <div class="account_information-label">
+                        <div class="account_information-title">Full name</div>
+                        <div class="account_information-context"><%-userData.user.name%></div>
+                    </div>
+                    <div class="account_information-label">
+                        <div class="account_information-title">E-mail</div>
+                        <div class="account_information-context"><%-userData.user.mail%></div>
+                    </div>
+                    <div class="account_information-label">
+                        <div class="account_information-title">Account secure</div>
+                        <div class="account_information-context">
+                            <% if (userData.user.salt) { %>
+                                <i class="fa fa-check" aria-hidden="true"></i>
+                            <% } else { %>
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            <% } %>
+                        </div>
+                    </div>
+                    <div class="account_information-label">
+                        <div class="account_information-title">Amount of devices</div>
+                        <div class="account_information-context"><%-userData.deviceLength%></div>
+                    </div>
+                </div>
             </div>
-            <div class="account__profile-manager">
-                <div class="account__profile-button" id="replenishAccount"><%= text.page.replenishAccount %></div>
+            <div class="account_container container-item-table">
+                <div class="item-table">
+                    <div class="item-table_header">
+                        <div class="item-table_header-title" data-text="Products table">Products table</div>
+                        <div class="item-table_view-setting">
+                            <div class="item-table_view-anount">
+                                <span>Show</span>
+                                <div class="custom-select">
+                                    <div class="select-styled"></div>
+                                    <ul class="select-options hide">
+                                    </ul>
+                                </div>
+                                <span>entries</span>
+                            </div>
+                            <div class="item-table_add-button">Add</div>
+                            <div class="item-table_view-pages">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-table_body">
+                        <table class="table-block">
+                            <thead class="table-block_header">
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-    	<div class="account__container-title" id="ownDevices"><%= text.page.ownDevices %></div>
-    	<div class="account__container">
-    		<div class="account__container-button-block">
-    			<div class="account__container-button" id="addButton"><%= text.page.add %></div>
-			</div>
-			<div class="account__container-table">
-    			<table class="account__table" id="ownDevicesTable">
-    				<thead class="account__table-head">
-    					<tr>
-    						<td>№</td>
-    						<td><%= text.page.type %></td>
-    						<td><%= text.page.firm %></td>
-    						<td><%= text.page.model %></td>
-    						<td><%= text.page.inRent %></td>
-    						<td><%= text.page.address %></td>
-    						<td colspan="2"><%= text.page.options %></td>
-    					</tr>
-    				</thead>
-    				<tbody class="account__table-body">
-    				</tbody>
-    			</table>
-    		</div>
-    	</div>
-    	<div class="account__container-title" id="rentedDevices"><%= text.page.rentedProducts %></div>
-    	<div class="account__container">
-    		<div class="account__container-table">
-    			<table class="account__table" id="rentedDevicesTable">
-    				<thead class="account__table-head">
-    					<tr>
-    						<td>№</td>
-    						<td><%= text.page.type %></td>
-    						<td><%= text.page.model %></td>
-    						<td><%= text.page.address %></td>
-    						<td><%= text.page.startDate %></td>
-    						<td><%= text.page.containerNumber %></td>
-    						<td><%= text.page.containerPass %></td>
-    						<td colspan="2"><%= text.page.options %></td>
-    					</tr>
-    				</thead>
-    				<tbody class="account__table-body">
-    				</tbody>
-    			</table>
-    		</div>
-    	</div>
+    </main>
+    <div class="popup-form-wrapper">
+        <div class="popup-form">
+            <div class="popup-form_header popup-form_center">
+                <div class="popup-form_header-title">Edit</div>
+                <div class="popup-form_header-close">
+                    <i class="fa fa-times"></i>
+                </div>
+            </div>
+            <div class="popup-form_body">
+                <div class="popup-form_body-container">
+                    <div class="popup-form_body-container-wrapper">
+                        <div class="popup-form_body-container-title">Product</div>
+                        <div class="popup-form_body-container-form">
+                            <label class="popup-form_body-container-label">
+                                <span class="popup-form_body-container-label-title">Product type</span>
+                                <div class="custom-select" id="popupFormProductType">
+                                    <div class="select-styled"></div>
+                                    <ul class="select-options hide">
+                                    </ul>
+                                </div>
+                                <div class="popup-form_error-block"></div>
+                            </label>
+                            <label class="popup-form_body-container-label input-label">
+                                <span class="popup-form_body-container-label-title">Shop code</span>
+                                <input class="popup-form_body-container-label-input" id="popupFormShopCode">
+                                <div class="popup-form_error-block"></div>
+                            </label>
+                            <div class="popup-form_body-container-submit">Submit</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-<% include _layouts/footer %>
-
-<div class="screen-wrapper" id="editBlockWrapper"></div>
-<div class="edit-product" id="editBlock">
-	<div class="edit-product__back" id="editBlockBack"><i class="fas fa-chevron-left"></i> <span class="edit-product__back-text"><%= text.page.back %></span></div>
-	<div class="edit-product__title" id="editBlockTitle"><%= text.page.editProduct %></div>
-	<div class="edit-product__form">
-		<label class="edit-product__form-label">
-			<span class="edit-product__form-label-title"><%= text.page.productType %></span>
-			<select class="edit-product__form-field" id="editFieldType">
-				<option selected><%= text.page.chooseVariant %></option>
-			</select>
-		</label>
-		<label class="edit-product__form-label">
-			<span class="edit-product__form-label-title"><%= text.page.firm %></span>
-			<input class="edit-product__form-field" type="text" id="editFieldCompany">
-		</label>
-		<label class="edit-product__form-label">
-			<span class="edit-product__form-label-title"><%= text.page.model %></span>
-			<input class="edit-product__form-field" type="text" id="editFieldModel">
-		</label>
-		<label class="edit-product__form-label">
-			<span class="edit-product__form-label-title"><%= text.page.state %></span>
-			<input class="edit-product__form-field" type="text" id="editFieldState">
-		</label>
-		<label class="edit-product__form-label">
-			<span class="edit-product__form-label-title"><%= text.page.address %></span>
-			<select class="edit-product__form-field" id="editFieldAddress">
-                <option selected><%= text.page.chooseVariant %></option>
-			</select>
-		</label>
-		<label class="edit-product__form-label">
-			<span class="edit-product__form-label-title"><%= text.page.price %></span>
-			<input class="edit-product__form-field" type="text" id="editFieldPrice">
-		</label>
-		<label class="edit-product__form-label">
-			<span class="edit-product__form-label-title"><%= text.page.tracker %></span>
-			<input type="checkbox" id="editFieldTracker">
-		</label>
-		<label class="edit-product__form-label">
-			<span class="edit-product__form-label-title"><%= text.page.describe %></span>
-			<textarea class="edit-product__form-field edit-product__form-textarea" id="editFieldContext"></textarea>
-		</label>
-	</div>
-	<div class="edit-product__form-button-block">
-		<div class="edit-product__form-button" id="editBlockSubmit"><%= text.page.submit %></div>
-	</div>
-</div>
-<div class="edit-product" id="overlookDlock">
-    <div class="edit-product__back" id="overlookBack"><i class="fas fa-chevron-left"></i> <span class="edit-product__back-text"><%= text.page.back %></span></div>
-    <div class="edit-product__title"><%= text.page.overlook %></div>
-    <div class="edit-product__form">
-        <label class="edit-product__form-label">
-            <span class="edit-product__form-label-title"><%= text.page.type %></span>
-            <span class="edit-product__form-label-value" id="overlookFieldType">text</span> 
-        </label>
-        <label class="edit-product__form-label">
-            <span class="edit-product__form-label-title"><%= text.page.firm %></span>
-            <span class="edit-product__form-label-value" id="overlookFieldFirm">text</span> 
-        </label>
-        <label class="edit-product__form-label">
-            <span class="edit-product__form-label-title"><%= text.page.model %></span>
-            <span class="edit-product__form-label-value" id="overlookFieldModel">text</span> 
-        </label>
-        <label class="edit-product__form-label">
-            <span class="edit-product__form-label-title"><%= text.page.state %></span>
-            <span class="edit-product__form-label-value" id="overlookFieldState">text</span> 
-        </label>
-        <label class="edit-product__form-label">
-            <span class="edit-product__form-label-title"><%= text.page.describe %></span>
-            <span class="edit-product__form-label-value" id="overlookFieldDescribe">text</span> 
-        </label>
-        <label class="edit-product__form-label">
-            <span class="edit-product__form-label-title"><%= text.page.price %></span>
-            <span class="edit-product__form-label-value" id="overlookFieldPrice">text</span> 
-        </label>
-        <label class="edit-product__form-label">
-            <span class="edit-product__form-label-title"><%= text.page.containerNumber %></span>
-            <span class="edit-product__form-label-value" id="overlookFieldCNumber">text</span> 
-        </label>
-        <label class="edit-product__form-label">
-            <span class="edit-product__form-label-title"><%= text.page.containerPass %></span>
-            <span class="edit-product__form-label-value" id="overlookFieldCPass">text</span> 
-        </label>
-        <label class="edit-product__form-label">
-            <span class="edit-product__form-label-title"><%= text.page.inRent %></span>
-            <span class="edit-product__form-label-value" id="overlookFieldRent">text</span> 
-        </label>
-        <label class="edit-product__form-label">
-            <span class="edit-product__form-label-title"><%= text.page.address %></span>
-            <span class="edit-product__form-label-value" id="overlookFieldAddress">text</span> 
-        </label>
-        <div class="edit-product__map" id="overlookFieldAMap"></div>
-    </div>
-</div>
+    <% include _layouts/footer %>
 </body>
 <script async defer type="text/javascript" src="/js/formValidator.js"></script>
-<script async defer type="text/javascript" src="/js/page/account.js"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= mapKey %>&language=<%= language %>"></script>
+<script async defer type="text/javascript" src="/js/header.js"></script>
+<script async defer type="module" src="/js/page/account.js"></script>
+
 </html>

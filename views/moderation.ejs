@@ -15,77 +15,39 @@
     <div class="wrapper">
         <div class="center-align">
             <div class="moderation__menu">
-                <div class="moderation__menu-buttons active-buttons">Product types</div>
-                <div class="moderation__menu-buttons">Products</div>
-                <div class="moderation__menu-buttons">Users</div>
+                <a href="/moderation/productTypes" class="moderation__menu-buttons <%if (module == "productTypes") { %>active-buttons<% } %>">Product types</a>
+                <a href="/moderation/products" class="moderation__menu-buttons <%if (module == "products") { %>active-buttons<% } %>">Products</a>
+                <a href="/moderation/users" class="moderation__menu-buttons <%if (module == "users") { %>active-buttons<% } %>">Users</a>
             </div>
             <div class="moderation__main-block">
                 <div class="moderation_container">
                     <div class="item-table">
                         <div class="item-table_header">
-                            <div class="item-table_header-title">Title</div>
+                            <div class="item-table_header-title">
+                                <%if (module == "productTypes") { %>Product types table<% } %>
+                                <%if (module == "products") { %>Products table<% } %>
+                                <%if (module == "users") { %>Users table<% } %>
+                            </div>
                             <div class="item-table_view-setting">
                                 <div class="item-table_view-anount">
                                     <span>Show</span>
                                     <div class="custom-select">
                                         <div class="select-styled"></div>
                                         <ul class="select-options hide">
-                                            <li val="10">10</li>
-                                            <li val="20">20</li>
-                                            <li val="50">50</li>
-                                            <li val="100">100</li>
-                                            <li val="all">all</li>
                                         </ul>
                                     </div>
                                     <span>entries</span>
                                 </div>
-                                <div class="item-table_add-button">Add</div>
+                                <%if (module !== "users") { %><div class="item-table_add-button">Add</div><% } %>
                                 <div class="item-table_view-pages">
-                                    <div class="item-table_page-button page-button">Previous</div>
-                                    <div class="item-table_page-button page-button">1</div>
-                                    <div class="item-table_page-button page-view">...</div>
-                                    <div class="item-table_page-button page-button">3</div>
-                                    <div class="item-table_page-button page-current">4</div>
-                                    <div class="item-table_page-button page-button">5</div>
-                                    <div class="item-table_page-button page-view">...</div>
-                                    <div class="item-table_page-button page-button">55</div>
-                                    <div class="item-table_page-button page-button">Next</div>
                                 </div>
                             </div>
                         </div>
                         <div class="item-table_body">
                             <table class="table-block">
                                 <thead class="table-block_header">
-                                    <td class="table-block_min-width">№</td>
-                                    <td>name</td>
-                                    <td>url</td>
-                                    <td class="table-block_min-width">options</td>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="table-block_min-width responsive-hide">1</td>
-                                        <td data-title="name">Product1</td>
-                                        <td data-title="url">dfmibdri.png</td>
-                                        <td class="table-block_min-width table-block_center">
-                                            <div class="item-table_button">edit</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="table-block_min-width responsive-hide">1</td>
-                                        <td data-title="name">Product1</td>
-                                        <td data-title="url">dfmibdri.png</td>
-                                        <td class="table-block_min-width table-block_center">
-                                            <div class="item-table_button">edit</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="table-block_min-width responsive-hide">1</td>
-                                        <td data-title="name">Product1</td>
-                                        <td data-title="url">dfmibdri.png</td>
-                                        <td class="table-block_min-width table-block_center">
-                                            <div class="item-table_button">edit</div>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -104,22 +66,8 @@
             </div>
             <div class="popup-form_body">
                 <div class="popup-form_body-container">
-                    <div class="popup-form_body-container-wrapper">
-                        <div class="popup-form_body-container-title">Product type</div>
-                        <div class="popup-form_body-container-form">
-                            <label class="popup-form_body-container-label">
-                                <span class="popup-form_body-container-label-title">Name</span>
-                                <input class="popup-form_body-container-label-input" id="popupFormName">
-                                <div class="popup-form_error-block"></div>
-                            </label>
-                            <label class="popup-form_body-container-label">
-                                <span class="popup-form_body-container-label-title">Url</span>
-                                <input class="popup-form_body-container-label-input" id="popupFormUrl">
-                                <div class="popup-form_error-block"></div>
-                            </label>
-                            <div class="popup-form_body-container-submit">Submit</div>
-                        </div>
-                    </div>
+                    <% if (module == "productTypes") { %><%- include('moderation/productTypesForm') %><% } %>
+                    <% if (module == "products") { %><%- include('moderation/productsForm') %><% } %>
                 </div>
             </div>
         </div>
@@ -129,117 +77,5 @@
 <script async defer type="text/javascript" src="/js/formValidator.js"></script>
 <script async defer type="text/javascript" src="/js/header.js"></script>
 <!-- <script async defer type="text/javascript" src="/js/page/moderation.js"></script> -->
-<script type="module">
-'use strict';
-
-import TableController from '/js/module/tableController.js';
-
-let table = new TableController({
-    selector: {
-        block: $(".custom-select").first(),
-        dataStep: [10, 20, 50, 100]
-    },
-    pages: {
-        block: $(".item-table_view-pages").first(),
-        schema: {
-            previous: {
-                value: "Previous"
-            },
-            next: {
-                value: "Next"
-            },
-            current: {
-                class: "item-table_page-button page-current"
-            },
-            defaultBlock: {
-                class: "item-table_page-button page-button"
-            },
-            separator: {
-                value: "...",
-                class: "item-table_page-button page-view"
-            }
-        }
-    },
-    editForm: {
-        title: "Product type",
-        block: $(".popup-form-wrapper").first(),
-        succes: ".popup-form_body-container-submit",
-        validate: {
-            func: formValidator,
-            messages: {
-                required: "Required data"
-            }
-        },
-        schema: [{
-                name: "name",
-                field: "#popupFormName",
-                type: "input",
-                validation: ["required"]
-            },
-            {
-                name: "url",
-                field: "#popupFormUrl",
-                type: "input",
-                validation: ["required"]
-        }]
-    },
-    block: $(".table-block").first(),
-    addButton: $(".item-table_add-button").first(),
-    schema: {
-        columns: [{
-            value: "№",
-            class: "table-block_min-width responsive-hide",
-            autoIncrement: true,
-            responsive: false
-        },
-        {
-            value: "name",
-            relatedData: "name"
-        },
-        {
-            value: "url",
-            relatedData: "url"
-        },
-        {
-            value: "options",
-            class: "table-block_min-width table-block_center",
-            buttons: ["edit"]
-        }],
-        buttons: {
-            edit: {
-                name: "edit",
-                class: "item-table_button",
-                action: "edit"
-            }
-        }
-    },
-    generalDataLength: 223,
-    data: [
-        { _id: "5bf448dbaf537a0950303329", name: 'test', url: 'test.png' },
-        { _id: "5bf448dbaf537a0950303339", name: 'test', url: 'test.png' },
-        { _id: "5bf448dbaf537a0950303349", name: 'test', url: 'test.png' },
-    ]
-});
-
-table.on("get", function(length, padding, cb) {
-    console.log(length, padding)
-    cb(null, {
-        data: [{ _id: "5bf448dbaf537a0950303329", name: 'test', url: 'test.png' }],
-        dbLength: 223
-    })
-});
-
-table.on("add", function(object, cb) {
-    console.log(object)
-    object._id = "5bf448dbaf537a09503033279";
-    cb(null, object);
-});
-
-table.on("edit", function(object, cb) {
-    console.log(object)
-    cb(null, object);
-});
-
-</script>
-
+<script async defer type="module" src="/js/page/moderation/<%= module %>.js"></script>
 </html>
