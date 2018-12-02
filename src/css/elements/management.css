@@ -7,8 +7,11 @@
     display: inline-block;
     position: relative;
     width: max-content;
-    margin: 0 8px;
+    
     color: #080622;
+}
+.item-table_header .custom-select {
+    margin: 0 8px;
 }
 .select-styled {
     position: relative;
@@ -31,6 +34,7 @@
     transform-origin: 50% 0%;
 }
 .select-options {
+    position: relative;
     z-index: 1;
     height: 0;
     opacity: 1;
@@ -62,6 +66,15 @@
 	transform: rotate(180deg);
 }
 
+.item-table {
+    visibility: hidden;
+    opacity: 0;
+    transition: all .5s;
+}
+.item-table.loaded {
+    visibility: visible;
+    opacity: 1;
+}
 .item-table_header-title {
     font-size: 1.75em;
     font-weight: 600;
@@ -85,6 +98,12 @@
     width: 50%;
     min-width: fit-content;
 }
+.item-table_view-anount {
+    margin-right: 5px;
+}
+.item-table_view-pages {
+    margin-left: 5px;
+}
 .item-table_view-pages {
     justify-content: flex-end;
 }
@@ -93,8 +112,8 @@
     border: 2px solid #080622;
     cursor: pointer;
     transition: all .125s;
-    margin-left: 15px;
-    margin-right: 15px; 
+    margin-left: 10px;
+    margin-right: 10px; 
 }
 .item-table_add-button:hover {
     background: #080622;
@@ -125,10 +144,33 @@
 .item-table_page-button:last-child {
     margin-left: 2px;
 }
-.table-block {
+.table-block {  
+    position: relative;
     width: 100%;
     border-top: 1px solid #e7e7e9;
     border-collapse: collapse;
+}
+.table-block.loading {
+    pointer-events: none;
+}
+.table-block.loading:after {
+    content: "";
+    position: absolute;
+    top: calc( 50% + ( 1em + 40px ) / 2 );
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border: 3px solid #e7e7e9;
+    border-top-color: #080622;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: rotate 1.5s linear infinite;
+}
+.table-block.loading tbody {
+    opacity: .1;
+}
+.table-block tbody {
+    transition: .125s;
 }
 .table-block td {
     white-space: nowrap;
@@ -154,6 +196,7 @@
     padding: 5px 12px;
     cursor: pointer;
     display: inline-block;
+    margin: 0 4px;
     transition: all .125s;
 }
 .item-table_button:hover {
@@ -281,7 +324,14 @@
     margin: 1em 0;
     align-items: center;
     position: relative;
+    
+}
+.popup-form_body-container-label.input-label {
     overflow: hidden;
+}
+.popup-form_body .custom-select {
+    width: 260px;
+    text-align: left;
 }
 .popup-form_body-container-label-title {
     padding: 0 10px;
@@ -334,7 +384,10 @@
     background: #080622;
     color: whitesmoke;
 }
-.popup-form_error {
+.popup-form_body-container-label-input.popup-form_error {
     border-color: #900000 !important;
     padding-right: 2.4em;
+}
+.custom-select.popup-form_error {
+    box-shadow: 0 0 0px 1px #900000;
 }
