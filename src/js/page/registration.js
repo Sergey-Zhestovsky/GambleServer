@@ -60,8 +60,8 @@ function authorisation(options) {
   function errorHandler(error) {
     clear();
 
-    switch (error.title) {
-      case "registrationError":
+    switch (error.code) {
+      case 104:
         setErrorMessage(errorFields.mail, error.message);
         break;
       default:

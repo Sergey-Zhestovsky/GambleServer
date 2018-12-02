@@ -52,8 +52,8 @@ function authorisation(options) {
   function errorHandler(error) {
     clear();
 
-    switch (error.title) {
-      case "loginError":
+    switch (error.code) {
+      case 103:
         setErrorMessage(errorFields.mail, error.message);
         break;
       default:

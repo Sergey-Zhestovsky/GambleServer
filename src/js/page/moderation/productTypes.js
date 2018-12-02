@@ -27,7 +27,7 @@ let tableConfig = {
         }
     },
     editForm: {
-        title: "Product",
+        title: "Product type",
         block: $(".popup-form-wrapper").first(),
         succes: ".popup-form_body-container-submit",
         validate: {
@@ -37,25 +37,21 @@ let tableConfig = {
             }
         },
         schema: [{
-                name: "productType",
-                field: "#popupFormProductType",
-                type: "select",
-                selectorConfig: {
-                    key: "_id",
-                    value: "name"
-                },
+                name: "name",
+                field: "#popupFormName",
+                type: "input",
                 validation: ["required"]
             },
             {
-                name: "shopCode",
-                field: "#popupFormShopCode",
+                name: "url",
+                field: "#popupFormUrl",
                 type: "input",
                 validation: ["required"]
         }]
     },
     block: $(".table-block").first(),
     loader: {
-        wrapperLoader: $(".container-item-table").first(),
+        wrapperLoader: $(".moderation_container").first(),
         wrapperTable: $(".item-table").first(),
     },
     addButton: $(".item-table_add-button").first(),
@@ -67,55 +63,40 @@ let tableConfig = {
             responsive: false
         },
         {
-            value: "Product type",
-            relatedData: ["productType", "name"]
+            value: "name",
+            relatedData: "name"
         },
         {
-            value: "Shop code",
-            relatedData: "shopCode"
+            value: "url",
+            relatedData: "url"
         },
         {
             value: "options",
             class: "table-block_min-width table-block_center",
-            buttons: ["edit", "delete"]
+            buttons: ["edit"]
         }],
         buttons: {
             edit: {
                 name: "edit",
                 class: "item-table_button",
                 action: "edit"
-            },
-            delete: {
-                name: "delete",
-                class: "item-table_button",
-                action: "delete"
             }
         }
     }
 };
 
 let connector = new ServerConnector({
-    path: "/account",
+    path: "/moderation",
     tableConfig: tableConfig,
     actions: {
         get: {
-            path: "/devices/get"
+            path: "/productTypes/get"
         },
         add: {
-            path: "/devices/add"
+            path: "/productTypes/add"
         },
         edit: {
-            path: "/devices/edit"
+            path: "/productTypes/edit"
         }
-    },
-    relatedData: [{
-        name: "productType",
-        to: "editForm",
-        path: "/moderation/productTypes/get",
-        options: {
-            length: -1,
-            padding: 0
-        },
-        storeVariable: "data"
-    }]
+    }
 });

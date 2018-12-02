@@ -55,7 +55,7 @@ let tableConfig = {
     },
     block: $(".table-block").first(),
     loader: {
-        wrapperLoader: $(".container-item-table").first(),
+        wrapperLoader: $(".moderation_container").first(),
         wrapperTable: $(".item-table").first(),
     },
     addButton: $(".item-table_add-button").first(),
@@ -95,17 +95,20 @@ let tableConfig = {
 };
 
 let connector = new ServerConnector({
-    path: "/account",
+    path: "/moderation",
     tableConfig: tableConfig,
     actions: {
         get: {
-            path: "/devices/get"
+            path: "/products/get"
         },
         add: {
-            path: "/devices/add"
+            path: "/products/add"
         },
         edit: {
-            path: "/devices/edit"
+            path: "/products/edit"
+        },
+        delete: {
+            path: "/products/delete"
         }
     },
     relatedData: [{
