@@ -70,19 +70,7 @@ function errorGenerator() {
     };
 
     this.mongodbError = (req, error) => {
-        switch (error.describe) {
-            case 'existing email':
-                return this.registrationError(req.data.language);
-                break;
-            case 'no such user':
-                return this.loginError(req.data.language);
-                break;
-            default:
-                return setError(req.app.get('env'), error);
-                break;
-        }
-
-        function setError(env, result) {
+        let setError = (env, result) => {
             let error = {
                 type: "MongodbError",
                 message: "Server API error",
@@ -94,6 +82,28 @@ function errorGenerator() {
 
             return this.create(error);
         }
+
+        switch (error.describe) {
+            case 'existing email':
+                return this.registrationError(req.data.language);
+                break;
+            case 'no such user':
+                return this.loginError(req.data.language);
+                break;
+            default:
+                return setError(req.app.get('env'), error);
+                break;
+        }
+    };
+
+    this.dynamicCookie = (message, dynamicToken) => {
+        let error = {
+            type: "DynamicCookie",
+            message: "Problem with security sign: " + message,
+            code: 107
+        }
+        
+        return this.create(error, {dynamicToken});
     };
 }
 

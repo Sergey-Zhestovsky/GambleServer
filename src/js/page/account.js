@@ -96,6 +96,7 @@ let tableConfig = {
 
 let connector = new ServerConnector({
     path: "/account",
+    signRequests: true,
     tableConfig: tableConfig,
     actions: {
         get: {

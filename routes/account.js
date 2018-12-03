@@ -3,7 +3,8 @@ let express = require('express'),
     mongo = require('../logic/mongodb/API'),
     errorGenerator = require('../logic/error-generator'),
     language = require('../logic/language'),
-    dynamicTokenValidator = require('./modules/dynamicToken.js')
+    dynamicTokenValidator = require('./modules/dynamicToken.js'),
+    validator = require('../logic/class/requestValidator');
 
 router.all('*', function(req, res, next) {
     if (!(req.data.user && req.data.user.id !== undefined))
@@ -35,11 +36,11 @@ router.post('/devices/:action', function(req, res, next) {
 
   if (action == "get" && validator(data, ["length", "padding"]))
     return res.send(errorGenerator.requireData());
-  
-  mongo.userDeviceManager(action, data, (error, result) => {
-    if (error) {
+
+  mongo.userDeviceManager(action, {user: req.data.user.id}, data, (error, result) => {
+    if (error)
         return res.send(errorGenerator.mongodbError(req, error));
-    }
+
       res.send({error, result});
   });
 });

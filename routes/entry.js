@@ -45,7 +45,6 @@ function authoriseUser([req, res]) {
 
   return new Promise((resolve, reject) => {
     if (req.cookies.token !== undefined) {
-      //let auth = new User();
 
       User.verifyFromToken(req.cookies.token)
         .then(answer => {

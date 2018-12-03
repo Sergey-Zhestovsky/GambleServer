@@ -45,15 +45,16 @@
 .account_information-title:after {
     content: ":";
 }
-.account_container-title:after,
+.account_container-title:after, 
 .item-table_header-title:after {
     content: attr(data-text);
     position: absolute;
     top: -.6em;
     font-size: 2em;
-    width: 100%;
-    left: 0;
+    left: 50%;
     z-index: -1;
     color: #08062208;
     font-weight: 900;
+    white-space: nowrap;
+    transform: translate(-50%, 0);
 }

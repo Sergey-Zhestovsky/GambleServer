@@ -146,7 +146,7 @@ async function getProducts(searchData, {length, padding}, cb = function(){}) {
     } catch (err) {
         return errorHandler("getProducts", err, cb);
     }
-    
+
     cb(null, {dbLength, data});
 }
 
@@ -243,7 +243,7 @@ function userDeviceManager(action, ...args) {
     }
 
     
-    if (cotroller[action])
+    if (cotroller[action]) 
         return cotroller[action](...args);
     else
         return errorHandler("userDeviceManager", { code: "custom005" }, args[args.length - 1]);

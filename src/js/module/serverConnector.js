@@ -4,8 +4,8 @@ import TableController from '/js/module/tableController.js';
 import Connector from '/js/module/connector.js';
 
 export default class ServerConnector extends Connector {
-    constructor({ path, tableConfig, actions = {}, relatedData }) {
-        super();
+    constructor({ path, tableConfig, actions = {}, relatedData, signRequests }) {
+        super({signRequests});
 
         this.path = path;
         this.tableConfig = tableConfig;
