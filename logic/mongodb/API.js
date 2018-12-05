@@ -237,9 +237,36 @@ async function getUserAccountData(searchData, cb = function(){}) {
     cb(null, {deviceLength, user}); 
 }
 
+function getUserProducts(userData, data, cb = function(){}) {
+    return getProducts({user: new mongoose.Types.ObjectId(userData.user)}, data, (error, result) => {
+        if (error)
+            return errorHandler("getUserProducts", error, cb);
+
+        return cb(error, result);
+    });
+}
+
+function registrateProduct(userData, data, cb = function(){}) {
+    schemas.Product.findOneAndUpdate(data, userData, function(error, result) {
+        if (error)
+            return errorHandler("registrateProduct", error, cb);
+
+
+        return getProducts({_id: new mongoose.Types.ObjectId(result._id)}, {length: 1, padding: 0}, (error, result) => {
+            if (error)
+                return errorHandler("registrateProduct", error, cb);
+
+            let data = result ? result.data[0] : result;
+
+            return cb(error, data);
+        });
+    });
+}
+
 function userDeviceManager(action, ...args) {
     const cotroller = {
-        get: getProducts
+        get: getUserProducts,
+        add: registrateProduct
     }
 
     

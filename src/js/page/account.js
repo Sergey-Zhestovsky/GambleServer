@@ -29,29 +29,83 @@ let tableConfig = {
     editForm: {
         title: "Product",
         block: $(".popup-form-wrapper").first(),
-        succes: ".popup-form_body-container-submit",
         validate: {
             func: formValidator,
             messages: {
                 required: "Required data"
             }
         },
-        schema: [{
-                name: "productType",
-                field: "#popupFormProductType",
-                type: "select",
-                selectorConfig: {
-                    key: "_id",
-                    value: "name"
-                },
-                validation: ["required"]
+        behavior: {
+            add: {
+                block: "#popupFormAdd",
+                succes: "#popupFormAddSucces",
+                schema: [{
+                    name: "shopCode",
+                    field: "#popupFormAddShopCode",
+                    type: "input",
+                    validation: ["required"]
+                }]
             },
-            {
-                name: "shopCode",
-                field: "#popupFormShopCode",
-                type: "input",
-                validation: ["required"]
-        }]
+            edit: {
+                block: "#popupFormEdit",
+                succes: "#popupFormEditSucces",
+                schema: [{
+                    name: "productType",
+                    field: "#popupFormEditProductType",
+                    type: "text",
+                    source: ["productType", "name"]
+                }, {
+                    name: "shopCode",
+                    field: "#popupFormEditShopCode",
+                    type: "text"
+                }, {
+                    name: "passwordPreferenceList",
+                    field: "#popupFormEditPassword",
+                    type: "slider",
+                    schema: {
+                        header: {
+                            class: "slider-password"
+                        }
+                    },
+                    onAdd: {
+                        schema: [{
+                            
+                        }, {
+
+                        }]
+                    }
+                }, {
+                    name: "fingerprintPreferenceList",
+                    field: "#popupFormEditFingerprint",
+                    type: "slider",
+                    schema: {
+                        header: {
+                            class: "slider-fingerprint"
+                        }
+                    },
+                    onAdd: {
+                        serverRequest: {
+                            eventName: "synchroniseWithDevice"
+                        },
+                        schema: [{
+
+                        }, {
+
+                        }]
+                    }
+                }, {
+                    name: "voicePreferenceList",
+                    field: "#popupFormEditVoice",
+                    type: "slider",
+                    schema: {
+                        header: {
+                            class: "slider-voice"
+                        }
+                    }
+                }]
+            }
+        },
+        succes: ".popup-form_body-container-submit"
     },
     block: $(".table-block").first(),
     loader: {
@@ -77,18 +131,13 @@ let tableConfig = {
         {
             value: "options",
             class: "table-block_min-width table-block_center",
-            buttons: ["edit", "delete"]
+            buttons: ["edit"]
         }],
         buttons: {
             edit: {
                 name: "edit",
                 class: "item-table_button",
                 action: "edit"
-            },
-            delete: {
-                name: "delete",
-                class: "item-table_button",
-                action: "delete"
             }
         }
     }
@@ -109,6 +158,9 @@ let connector = new ServerConnector({
             path: "/devices/edit"
         }
     },
+    customEvents: {
+        synchroniseWithDevice: "/some/path"
+    },
     relatedData: [{
         name: "productType",
         to: "editForm",
@@ -120,3 +172,14 @@ let connector = new ServerConnector({
         storeVariable: "data"
     }]
 });
+
+let personalInformationController = {
+    amountOfDevices: $("#amountOfDevices"),
+    incrementAmount() {
+        this.amountOfDevices.text( Number(this.amountOfDevices.text()) + 1 );
+    }
+}
+
+connector.on("add", () => {
+    personalInformationController.incrementAmount();
+})

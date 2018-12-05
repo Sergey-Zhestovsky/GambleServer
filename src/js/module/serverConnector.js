@@ -13,6 +13,8 @@ export default class ServerConnector extends Connector {
         this.relatedData = relatedData;
         this.table;
 
+        this.eventList = new Map();
+
         this.create();
     }
 
@@ -79,11 +81,38 @@ export default class ServerConnector extends Connector {
     tableDataListner(eventName, handler) {
         this.table.on(eventName, (object, cb) => {
             handler(object)
-                .then( (result) => cb(null, result) )
+                .then((result) => {
+                    this.triggerEvent(eventName);
+                    cb(null, result);
+                })
                 .catch( (error) => {
                     console.log(error)
                     cb(error)
                 } );
         });
+    }
+
+    triggerEvent(event) {
+        if (this.eventList.has(event)) 
+            for(let f of this.eventList.get(event))
+                f();
+    }
+
+    on(event, func) {
+        if (this.eventList.has(event))
+            this.eventList.get(event).push(func)
+        else
+            this.eventList.set(event, [func]) 
+    }
+
+    of(event, func) {
+        if (this.eventList.has(event)) {
+            let arr = this.eventList.get(event);
+            
+            for(let i = 0; i < arr.length; i++) {
+                if (arr[i] === func) 
+                    arr.splice(i--, 1)
+            }
+        }
     }
 }
