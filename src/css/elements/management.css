@@ -304,6 +304,10 @@
     display: flex;
     overflow-x: hidden;
 }
+.popup-form_body-container-wrapper {
+    width: 100%;
+    margin: auto;
+}
 .popup-form_body-container {
     width: 100%;
     height: 100%;
@@ -324,10 +328,23 @@
     margin: 1em 0;
     align-items: center;
     position: relative;
-    
 }
 .popup-form_body-container-label.input-label {
     overflow: hidden;
+}
+.popup-form_body-container-label.text-label {
+    cursor: inherit;
+}
+.popup-form_body-container-label.text-label .popup-form_body-container-label-title {
+    font-weight: 600;
+    cursor: default;
+}
+.popup-form_body-container-label.text-label .popup-form_body-container-label-title:after {
+    content: ": ";
+}
+.popup-form_body-container-label-text {
+    color: #565661;
+    cursor: inherit;
 }
 .popup-form_body .custom-select {
     width: 260px;
@@ -340,6 +357,8 @@
 .popup-form_body-container-form {
     display: inline-block;
     text-align: center;
+    width: 100%;
+    padding: 0 25px;
 }
 .popup-form_error-block {
     visibility: hidden;
@@ -390,4 +409,137 @@
 }
 .custom-select.popup-form_error {
     box-shadow: 0 0 0px 1px #900000;
+}
+.popup-form_body-container-content {
+    width: fit-content;
+    margin: 0 auto;
+}
+.popup-form_body-container-content.fixed-width {
+    min-width: 400px;
+}
+
+.popup-form_slider-container {
+    margin: 1em 0;
+}
+.popup-form_slider-header {
+    font-size: 1.1em;
+    padding: 10px;
+    text-align: left;
+}
+.popup-form_slider {
+    font-size: 0.9em;
+    display: flex;
+    overflow: auto;
+} 
+.popup-form_slider-block {
+    width: fit-content;
+    margin: 5px;
+    border: 1px solid #e4e3e3;
+    /* box-shadow: 0 0 4px -2px #080622c9; */
+}
+.popup-form_slider-block-header {
+    width: 9em;
+    height: 9em;
+    padding: 3em 5px;
+    background: #f5f5f5;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-blend-mode: overlay;
+}
+.popup-form_slider-block-header.slider-password {
+    background-image: url(/img/icons/pass.png);
+}
+.popup-form_slider-block-header.slider-fingerprint {
+    background-image: url(/img/icons/finger2.png);
+}
+.popup-form_slider-block-header.slider-voice {
+    background-image: url(/img/icons/voice.png);
+}
+.popup-form_slider-block-footer {
+    background: #e4e3e3;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+.popup-form_slider-delete-button {
+    font-size: 0.8em;
+    text-decoration: underline;
+    cursor: pointer;
+    color: #565661;
+    transition: all .125s;
+}
+.popup-form_slider-delete-button:hover {
+    color: black;
+}
+.popup-form_slider-block.add-block {
+    border: none;
+}
+.popup-form_slider-add-button {
+    width: 9em;
+    height: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    border: 2px dashed #84848c;
+    cursor: pointer;
+    color: #565661;
+    transition: all .125s;
+}
+.popup-form_slider-add-button:hover {
+    border-color: #565661;
+    color: #080622;
+}
+.popup-form_slider-add-button i {
+    font-size: 2.5em;
+}
+
+.el-switch,
+.el-switch-style,
+.el-switch-style:before {
+    box-sizing: border-box;
+}
+.el-switch {
+    font-size: 12px;
+    display: inline-block;
+    height: 1.6em;
+    position: relative;
+}
+.el-switch .el-switch-style {
+    height: 1.6em;
+    left: 0;
+    background: #f5f5f5;
+    border-radius: 0.8em;
+    display: inline-block;
+    position: relative;
+    top: 0;
+    transition: all .125s ease-in-out;
+    width: 3em;
+    cursor: pointer;
+}
+.el-switch .el-switch-style:before {
+    display: block;
+    content: '';
+    height: 1.4em;
+    position: absolute;
+    width: 1.4em;
+    background-color: #d0d0d0;
+    border-radius: 50%;
+    left: 0.1em;
+    top: 0.1em;
+    transition: all .125s ease-in-out;
+}
+.el-switch>input[type="checkbox"] {
+    display: none;
+}
+.el-switch>input[type="checkbox"][disabled]+.el-switch-style {
+    cursor: not-allowed;
+}
+.el-switch>input[type="checkbox"]:checked+.el-switch-style {
+    background-color: #565661;
+}
+.el-switch>input[type="checkbox"]:checked+.el-switch-style:before {
+    left: 50%;
+    background: whitesmoke;
 }
