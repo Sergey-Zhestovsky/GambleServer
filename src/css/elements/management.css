@@ -312,10 +312,11 @@
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    @justify-content: center;
+    @align-items: center;
     flex-shrink: 0;
     font-size: 1.2em;   
+    flex-direction: column;
 }
 .popup-form_body-container-title {
     text-align: center;
@@ -432,10 +433,10 @@
     overflow: auto;
 } 
 .popup-form_slider-block {
+    position: relative;
     width: fit-content;
     margin: 5px;
     border: 1px solid #e4e3e3;
-    /* box-shadow: 0 0 4px -2px #080622c9; */
 }
 .popup-form_slider-block-header {
     width: 9em;
@@ -461,7 +462,7 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    padding: 10px 0;
+    height: 2.5em;
 }
 .popup-form_slider-delete-button {
     font-size: 0.8em;
@@ -475,6 +476,7 @@
 }
 .popup-form_slider-block.add-block {
     border: none;
+    height: calc(11.5em + 2px);
 }
 .popup-form_slider-add-button {
     width: 9em;
@@ -542,4 +544,49 @@
 .el-switch>input[type="checkbox"]:checked+.el-switch-style:before {
     left: 50%;
     background: whitesmoke;
+}
+.popup-form_slider-delete-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(245, 245, 245, 0.9);
+    transition: all .125s;
+    animation: show .125s linear;
+}
+.popup-form_slider-delete-wrapper.hide {
+    opacity: 0;
+}
+@keyframes show {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+.popup-form_slider-cancel-button {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #565661;
+    transition: all .125s;
+}
+.popup-form_slider-cancel-button:hover {
+    color: black;
+}
+.popup-form_nested-container-header {
+    display: flex;
+    font-size: 1.1em;
+    font-weight: 600;
+    background: #565661;
+    color: whitesmoke;
+    padding: 12px 30px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+.popup-form_nested-container-back {
+    position: absolute;
+    left: 30px;
+    cursor: pointer;
 }
