@@ -53,7 +53,7 @@ let tableConfig = {
                     name: "productType",
                     field: "#popupFormEditProductType",
                     type: "text",
-                    source: ["productType", "name"]
+                    source: ["name"]
                 }, {
                     name: "shopCode",
                     field: "#popupFormEditShopCode",
@@ -62,49 +62,89 @@ let tableConfig = {
                     name: "passwordPreferenceList",
                     field: "#popupFormEditPassword",
                     type: "slider",
+                    dataSchema: {
+                        name: "name",
+                        state: "using"
+                    },
                     schema: {
                         header: {
                             class: "slider-password"
+                        },
+                        delete: {
+                            value: "Delete"
+                        },
+                        cancel: {
+                            value: "Cancel"
                         }
                     },
                     onAdd: {
-                        schema: [{
-                            
-                        }, {
-
-                        }]
+                        nestedElement: {
+                            id: "password",
+                            title: "Password"
+                        }
                     }
                 }, {
                     name: "fingerprintPreferenceList",
                     field: "#popupFormEditFingerprint",
                     type: "slider",
+                    dataSchema: {
+                        name: "name",
+                        state: "using"
+                    },
                     schema: {
                         header: {
                             class: "slider-fingerprint"
+                        },
+                        delete: {
+                            value: "Delete"
+                        },
+                        cancel: {
+                            value: "Cancel"
                         }
                     },
                     onAdd: {
                         serverRequest: {
                             eventName: "synchroniseWithDevice"
-                        },
-                        schema: [{
-
-                        }, {
-
-                        }]
+                        }
                     }
                 }, {
                     name: "voicePreferenceList",
                     field: "#popupFormEditVoice",
                     type: "slider",
+                    dataSchema: {
+                        name: "name",
+                        state: "using"
+                    },
                     schema: {
                         header: {
                             class: "slider-voice"
+                        },
+                        delete: {
+                            value: "Delete"
+                        },
+                        cancel: {
+                            value: "Cancel"
                         }
                     }
                 }]
             }
         },
+        nestedElements: [{
+            id: "password",
+            block: "#popupFormNestedPassword",
+            schema: [{
+                    name: "name",
+                    field: "#popupFormEditPasswordName",
+                    type: "input",
+                    validation: ["required"]
+                }, {
+                    name: "value",
+                    field: "#popupFormEditPasswordPassword",
+                    type: "input",
+                    validation: ["required"]
+                }],
+            succes: "#popupFormEditPasswordSucces"
+        }],
         succes: ".popup-form_body-container-submit"
     },
     block: $(".table-block").first(),
@@ -153,9 +193,6 @@ let connector = new ServerConnector({
         },
         add: {
             path: "/devices/add"
-        },
-        edit: {
-            path: "/devices/edit"
         }
     },
     customEvents: {

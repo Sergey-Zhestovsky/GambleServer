@@ -1,9 +1,10 @@
 'use strict';
 
 import CustomDropDownSelector from '/js/module/customSelector.js';
+import DeviceSettingSlider from '/js/module/deviceSettingSlider.js';
 
 export default class PopupForm {
-	constructor({title, block, validate, behavior, succes, schema = [], relatedData}) {
+	constructor({title, block, validate, behavior, succes, schema = [], relatedData, nestedElements}) {
 		this.title = title;
 		this.block = block;
 		this.validate = (validate && validate.func) ? validate : false;
@@ -11,13 +12,18 @@ export default class PopupForm {
 		this.succes = succes;
 		this.schema = schema;
 		this.relatedData = relatedData;
+		this.nestedElements = nestedElements;
 
-		this.initialObject;
-		this.succesCallBack;
-		this.action;
-		this.currentSchema;
+		// this.initialObject;
+		// this.succesCallBack;
+		// this.currentSchema;
+		this.formStack = [];
 
 		this.createForm();
+	}
+
+	get form() {
+		return this.formStack[this.formStack.length - 1];
 	}
 
 	createForm() {
@@ -26,8 +32,19 @@ export default class PopupForm {
 		if (this.behavior) {
 			let keys = Object.keys(this.behavior);
 
-			for(let behaviorObj of keys)
+			for(let key of keys) {
+				let behaviorObj = this.behavior[key];
+
 				behaviorObj.schema && (globalSchema = globalSchema.concat(behaviorObj.schema))
+			}
+		}
+
+		if (this.nestedElements) {
+			this.createNestedForm();
+
+			for(let object of this.nestedElements) {
+				object.schema && (globalSchema = globalSchema.concat(object.schema))
+			}
 		}
 
 		for(let field of globalSchema)
@@ -36,7 +53,7 @@ export default class PopupForm {
 					createSelectField(field, this.relatedData);
 					break;
 				case "slider":
-					createSlider(field);
+					createSlider(field, this);
 					break;
 				default:
 					break;
@@ -57,24 +74,30 @@ export default class PopupForm {
 			});
 		}
 
-		function createSlider(schemaField) {
-			
+		function createSlider(schemaField, context) {
+			schemaField.slider = new DeviceSettingSlider({
+				block: $(schemaField.field),
+				dataSchema: schemaField.dataSchema,
+				schema: schemaField.schema,
+				parentForm: context,
+				onAdd: schemaField.onAdd
+			});
 		}
 	}
 
 	open(action, object, cb = object) {
-		let currentBlock, succes;
-
-		this.currentSchema = (this.behavior && this.behavior[action].schema)
-			? this.behavior[action].schema 
-			: this.schema;	
+		let currentBlock, succes, initialObject,
+			currentSchema = (this.behavior && this.behavior[action].schema)
+				? this.behavior[action].schema 
+				: this.schema;
 
 		switch (action) {
 			case "add":
 				break;
 			case "edit":
-				this.openEdit(object);
-				this.initialObject = object;
+				this.openEdit(object, currentSchema);
+				initialObject = object;
+				// this.initialObject = object;
 				break;
 			default:
 				return cb("unknown action")
@@ -83,8 +106,13 @@ export default class PopupForm {
 
 		currentBlock = this.behavior ? this.behavior[action].block : null;
 		succes = this.behavior ? this.behavior[action].succes : this.succes;
-		this.action = action;
-		this.succesCallBack = cb;
+		// this.succesCallBack = cb;
+		this.formStack.push({
+			currentBlock,
+			succesCallBack: cb,
+			initialObject,
+			currentSchema
+		});
 
 		this.show(currentBlock);
 		this.setEvent("close");
@@ -92,8 +120,10 @@ export default class PopupForm {
 		this.setEvent("succes", this.block.find(succes));
 	}
 
-	openEdit(object) {
-		for(let value of this.currentSchema) {
+	openEdit(object, currentSchema) {
+		object = JSON.parse( JSON.stringify(object) );
+
+		for(let value of currentSchema) {
 			fillField(value.type, $(value.field), object[value.name], value);
 		}
 
@@ -103,11 +133,30 @@ export default class PopupForm {
 					field.val(data)
 					break;
 				case "select":
-					schemaField.selector.getSetValue( data[schemaField.selectorConfig.key],  data[schemaField.selectorConfig.value])
+					schemaField.selector.getSetValue( data[schemaField.selectorConfig.key],  data[schemaField.selectorConfig.value]);
+					break;
+				case "text":
+					field.text(getRelatedData(data, schemaField.source));
+					break;
+				case "slider":
+					schemaField.slider.setData(data);
 					break;
 				default:
 					break;
 			}
+
+			function getRelatedData(object, path) {
+		        if(!path || !Array.isArray(path))
+		            return object;
+
+		        let result = object;
+
+		        for(let el of path) {
+		            result = result[el] || "";
+		        }
+
+		        return result;
+		    }
 		}
 	}
 
@@ -126,21 +175,20 @@ export default class PopupForm {
 	}
 
 	clear() {
-		let currentBlock = this.behavior ? this.behavior[this.action].block : null;
+		if(!this.form)
+			return;
 
-		if (currentBlock)
-			this.block.find(currentBlock).hide();
+		if (this.form.currentBlock)
+			this.block.find(this.form.currentBlock).hide();
 		
-		for(let value of this.currentSchema) {
+		for(let value of this.form.currentSchema) {
 			clearField(value.type, $(value.field), value)
 		}
 
-		this.initialObject = undefined;
-		this.succesCallBack = undefined;
-		this.action = undefined;
-
 		if (this.validate)
 			this.removeErrors();
+
+		this.formStack.pop();
 
 		function clearField(type, field, schema) {
 			switch (type) {
@@ -150,10 +198,21 @@ export default class PopupForm {
 				case "select":
 					schema.selector.setDefault();
 					break;
+				case "text":
+					field.text("");
+					break;
+				case "slider":
+					schema.slider.clear();
+					break;
 				default:
 					break;
 			}
 		}
+	}
+
+	clearAll() {
+		while(this.formStack.length != 0)
+			this.clear();
 	}
 
 	setEvent(state, target) {
@@ -173,7 +232,7 @@ export default class PopupForm {
 		                }
 		                
 		                eventList.clear();
-		                this.hide(() => { this.clear(); });
+		                this.hide(() => { this.clearAll(); });
 		                activeState = false;
 		            }
 		        }
@@ -193,14 +252,17 @@ export default class PopupForm {
 	}
 
 	submit() {
-		let obj = this.getObject(this.initialObject),
+		let obj = this.getObject(this.form.initialObject),
 			options = {},
+			equality,
 			result;
 
-		if ( equalObject(this.initialObject, obj, this.currentSchema) )
+		if ( this.form.initialObject && equalityOfObjects(this.form.initialObject, obj, this.form.currentSchema) ) {
+			console.log(this.form.initialObject, obj)
 			return true;
+		}
 
-		for(let value of this.currentSchema) {
+		for(let value of this.form.currentSchema) {
 			if (value.validation)
 				options[value.name] = value.validation;
 		}
@@ -209,19 +271,19 @@ export default class PopupForm {
 			result = new this.validate.func().validate(obj, options);
 
 			if (Object.keys(result) == 0) {
-		    	this.succesCallBack(null, obj);
+		    	this.form.succesCallBack(null, obj);
 			}
 		    else {
 		    	this.errorHandler(result);
 		    	return false;
 		    }
 		} else {
-			this.succesCallBack(null, obj);
+			this.form.succesCallBack(null, obj);
 		}
 
 		return true;
 
-		function equalObject(mainObject = {}, object, schema) {
+		function equalityOfObjects(mainObject = {}, object, schema) {
 			let result = true;
 
 			for(let field of schema) {
@@ -233,6 +295,9 @@ export default class PopupForm {
 						result &= mainObject[field.name] && 
 							mainObject[field.name][field.selectorConfig.key] == object[field.name];
 						break;
+					case "slider":
+						result &= JSON.stringify(mainObject[field.name]) === JSON.stringify(object[field.name]);
+						break;
 					default:
 						break;
 				}
@@ -243,11 +308,13 @@ export default class PopupForm {
 	}
 
 	getObject(obj = {}) {
-		let temp = {}; 
-		Object.assign(temp, obj);
+		let temp = JSON.parse( JSON.stringify(obj) ); 
 		
-		for(let value of this.currentSchema) {
-			temp[value.name] = getField(value.type, $(value.field), value)
+		for(let value of this.form.currentSchema) {
+			let val = getField(value.type, $(value.field), value);
+
+			if (val !== undefined)
+				temp[value.name] = val;
 		}
 
 		return temp;
@@ -260,6 +327,9 @@ export default class PopupForm {
 				case "select":
 					return schema.selector.getSetValue();
 					break;
+				case "slider":
+					return schema.slider.getData();
+					break;
 				default:
 					break;
 			}
@@ -267,7 +337,7 @@ export default class PopupForm {
 	}
 
 	errorHandler(error) { 
-		for(let value of this.currentSchema) {
+		for(let value of this.form.currentSchema) {
 			if(error[value.name])
 				this.setError( $(value.field),  $(value.field).siblings(".popup-form_error-block"), value.type);
 			else
@@ -286,8 +356,51 @@ export default class PopupForm {
 	}
 
 	removeErrors() {
-		for(let value of this.currentSchema) {
+		for(let value of this.form.currentSchema) {
 			this.removeError($(value.field), $(value.field).siblings(".popup-form_error-block"), value.type);
 		}
 	}
+
+	createNestedForm() { 
+		let html = `
+			<div class="popup-form_nested-container-header">
+	            <div class="popup-form_nested-container-back" data-action="return">
+	                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+	            </div>
+	            <div class="popup-form_nested-container-header-title"></div>
+	        </div>`;
+
+		for(let element of this.nestedElements) {
+			element.DOM = {};
+			element.DOM.block = $(element.block);
+			element.DOM.container = element.DOM.block.parent();
+
+			let header = $(html);
+			element.DOM.container.prepend(header);
+
+			element.DOM.return = header.find("div[data-action='return']");
+			element.DOM.title = header.find(".popup-form_nested-container-header-title");
+		}
+	}
+
+	openNestedElement({id , title, cb=()=>{}}) {
+		let block;
+
+		for(let element of this.nestedElements)
+			if (element.id === id)
+				block = element;
+
+		if (!block)
+			return;
+
+		block.DOM.title.text(title)
+		$(this.form.currentBlock).parent().hide();
+		this.formStack.push({
+			currentBlock: block.DOM.block,
+			succesCallBack: cb,
+			currentSchema: block.schema
+		});
+		block.DOM.container.show();
+	}
+
 }

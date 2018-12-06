@@ -223,9 +223,10 @@ export default class TableController {
     }
 
     setEditHandler(event, action, variable) {
-        let obj = Object.create(null);
+        // let obj = Object.create(null);
+        // Object.assign(obj, );
 
-        Object.assign(obj, event.delegateTarget[variable]);
+        let obj = JSON.parse( JSON.stringify(event.delegateTarget[variable]) );
 
         this.PopupFormBlock.open(action, obj, (error, answer) => {
             if (error)
