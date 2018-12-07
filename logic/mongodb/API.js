@@ -263,10 +263,30 @@ function registrateProduct(userData, data, cb = function(){}) {
     });
 }
 
+function modifyProduct(userData, data, cb = function(){}) {
+    schemas.Product.where({
+        _id: data._id,
+        user: userData.user
+    }).updateOne(data, function(err, value) {
+        if (err) {
+            return errorHandler("editProductType", err, cb);
+        }
+
+        if (value.nModified != value.n)
+            return errorHandler("editProductType", { code: "custom002" }, cb);
+
+        if (value.n == 0)
+            return errorHandler("editProductType", { code: "custom003" }, cb);
+
+        cb(null, data);
+    });
+}
+
 function userDeviceManager(action, ...args) {
     const cotroller = {
         get: getUserProducts,
-        add: registrateProduct
+        add: registrateProduct,
+        edit: modifyProduct
     }
 
     
