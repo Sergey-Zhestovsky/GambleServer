@@ -1,6 +1,6 @@
 {
   "name": "gamble",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "set NODE_ENV=development&& nodemon ./bin/www"
@@ -14,10 +14,10 @@
     "ejs": "^2.6.1",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
+    "jquery": "^3.3.1",
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.3.12",
     "morgan": "~1.9.0",
-    "mysql": "^2.15.0",
     "nconf": "^0.9.1",
     "serve-favicon": "^2.5.0",
     "url-parse": "^1.4.4"

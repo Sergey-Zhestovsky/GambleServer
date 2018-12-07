@@ -24,7 +24,7 @@ function devError(err, req, res, next) {
 function sendMessage(err, res, req) {
   res.status(err.status);
   res.render('error', {
-    title: 'SmartShare',
+    title: 'Gamble',
     text: language.getTranslate(req.data.language, 'main', 'product'),
     user: req.data.user
   });

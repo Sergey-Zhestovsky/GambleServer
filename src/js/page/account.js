@@ -103,6 +103,10 @@ let tableConfig = {
                         }
                     },
                     onAdd: {
+                        nestedElement: {
+                            id: "requestStub",
+                            title: "Fingerprint"
+                        },
                         serverRequest: {
                             eventName: "synchroniseWithDevice"
                         }
@@ -125,6 +129,15 @@ let tableConfig = {
                         cancel: {
                             value: "Cancel"
                         }
+                    },
+                    onAdd: {
+                        nestedElement: {
+                            id: "requestStub",
+                            title: "Voice records"
+                        },
+                        serverRequest: {
+                            eventName: "synchroniseWithDevice"
+                        }
                     }
                 }]
             }
@@ -144,6 +157,16 @@ let tableConfig = {
                     validation: ["required"]
                 }],
             succes: "#popupFormEditPasswordSucces"
+        }, {
+            id: "requestStub",
+            block: "#popupFormNestedRequestStub",
+            schema: [{
+                    name: "name",
+                    field: "#popupFormEditRequestStubName",
+                    type: "input",
+                    validation: ["required"]
+                }],
+            succes: "#popupFormEditRequestStubSucces"
         }],
         succes: ".popup-form_body-container-submit"
     },
@@ -193,10 +216,13 @@ let connector = new ServerConnector({
         },
         add: {
             path: "/devices/add"
+        },
+        edit: {
+            path: "/devices/edit"
         }
     },
     customEvents: {
-        synchroniseWithDevice: "/some/path"
+        synchroniseWithDevice: "/deviceStub/get"
     },
     relatedData: [{
         name: "productType",
