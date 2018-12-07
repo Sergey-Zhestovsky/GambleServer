@@ -15,6 +15,7 @@ export default class DeviceSlider {
 
 		this.blockList = [];
 		this.deleteDataList = [];
+		this.addButton;
 
         this.create();
 	}
@@ -32,9 +33,9 @@ export default class DeviceSlider {
 		        </div>
 		    </div>`;
 
-	    addButton = $(addButton);
-	    this.setAddEvent(addButton);
-	    fragment.appendChild( addButton.get(0) );
+	    this.addButton = $(addButton);
+	    this.setAddEvent(this.addButton);
+	    fragment.appendChild( this.addButton.get(0) );
 	    this.block.html(fragment);
 	}
 
@@ -54,7 +55,7 @@ export default class DeviceSlider {
 	}
 
 
-	uppendDataBlocks() {
+	uppendDataBlocks(data = this.data) {
 		const variableName = "relatedElement";
 
 		let setBlockEvents = (block, dataSchema) => {
@@ -70,7 +71,7 @@ export default class DeviceSlider {
 		let fragment = document.createDocumentFragment(),
 			block;
 
-		for(let object of this.data) {
+		for(let object of data) {
 			block = document.createElement("div");
 			block.classList.add("popup-form_slider-block");
 			block[variableName] = object;
@@ -139,7 +140,18 @@ export default class DeviceSlider {
 
 	setAddEvent(addButton) {
 		addButton.on("click", () => {
-			this.parentForm.openNestedElement(this.onAdd.nestedElement);
+			this.parentForm.openNestedElement(this.onAdd, (error, result) => {
+				if (error)
+					return;
+
+				this.addData(result);
+			});
 		});
+	}
+
+	addData(data) {
+		data[this.dataSchema.state] = true;
+		this.data.push(data);
+		this.addButton.before(this.uppendDataBlocks([data]));
 	}
 }

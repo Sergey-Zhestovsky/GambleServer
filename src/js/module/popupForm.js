@@ -4,7 +4,7 @@ import CustomDropDownSelector from '/js/module/customSelector.js';
 import DeviceSettingSlider from '/js/module/deviceSettingSlider.js';
 
 export default class PopupForm {
-	constructor({title, block, validate, behavior, succes, schema = [], relatedData, nestedElements}) {
+	constructor({title, block, validate, behavior, succes, schema = [], relatedData, nestedElements, connector}) {
 		this.title = title;
 		this.block = block;
 		this.validate = (validate && validate.func) ? validate : false;
@@ -13,10 +13,8 @@ export default class PopupForm {
 		this.schema = schema;
 		this.relatedData = relatedData;
 		this.nestedElements = nestedElements;
+		this.connector = connector;
 
-		// this.initialObject;
-		// this.succesCallBack;
-		// this.currentSchema;
 		this.formStack = [];
 
 		this.createForm();
@@ -24,6 +22,10 @@ export default class PopupForm {
 
 	get form() {
 		return this.formStack[this.formStack.length - 1];
+	}
+
+	get previousForm() {
+		return this.formStack[this.formStack.length - 2];
 	}
 
 	createForm() {
@@ -177,9 +179,6 @@ export default class PopupForm {
 	clear() {
 		if(!this.form)
 			return;
-
-		if (this.form.currentBlock)
-			this.block.find(this.form.currentBlock).hide();
 		
 		for(let value of this.form.currentSchema) {
 			clearField(value.type, $(value.field), value)
@@ -188,7 +187,7 @@ export default class PopupForm {
 		if (this.validate)
 			this.removeErrors();
 
-		this.formStack.pop();
+		this.closeBlockInStack();
 
 		function clearField(type, field, schema) {
 			switch (type) {
@@ -258,7 +257,6 @@ export default class PopupForm {
 			result;
 
 		if ( this.form.initialObject && equalityOfObjects(this.form.initialObject, obj, this.form.currentSchema) ) {
-			console.log(this.form.initialObject, obj)
 			return true;
 		}
 
@@ -380,10 +378,38 @@ export default class PopupForm {
 
 			element.DOM.return = header.find("div[data-action='return']");
 			element.DOM.title = header.find(".popup-form_nested-container-header-title");
+			element.DOM.loading = element.DOM.block.find(".popup-form_body-container-wrapper-loading");
+			element.DOM.succes = $(element.succes);
+
+			element.DOM.succes.on("click", () => {
+				if(this.form.currentBlock === element.DOM)
+					this.submit();
+			});
 		}
 	}
 
-	openNestedElement({id , title, cb=()=>{}}) {
+	openNestedElement({ nestedElement: {id , title}, serverRequest }, initialCB = () => {}) {
+		let cb = (...args) => {
+			this.form.currentBlock.loading.removeClass("active");
+			this.clear();
+			initialCB(...args);
+		},
+		callBack = () => {
+			if (serverRequest)
+				return (error, result) => {
+					if (error)
+						return;
+
+					this.form.currentBlock.loading.addClass("active");
+					this.connector.customEventRequest(serverRequest.eventName, result, cb);
+				};
+			
+			return cb;
+		},
+		close = () => {
+			this.clear();
+		}
+
 		let block;
 
 		for(let element of this.nestedElements)
@@ -394,13 +420,64 @@ export default class PopupForm {
 			return;
 
 		block.DOM.title.text(title)
-		$(this.form.currentBlock).parent().hide();
+		block.DOM.closeFunction = close;
 		this.formStack.push({
-			currentBlock: block.DOM.block,
-			succesCallBack: cb,
+			currentBlock: block.DOM,
+			succesCallBack: callBack(),
 			currentSchema: block.schema
 		});
-		block.DOM.container.show();
+
+		this.showNestedElement()
+		
+		block.DOM.return.one("click", close);
 	}
 
+	showNestedElement() {
+		let current = this.form.currentBlock.container,
+			parent = this.previousForm.currentBlock.container 
+				? this.previousForm.currentBlock.container 
+				: $(this.previousForm.currentBlock).parent();
+		
+		
+		parent.addClass("hide");
+		current.show();
+
+		setTimeout(() => {
+			parent.hide();
+		}, 500);
+	}
+
+	hideNestedElement() { 
+		let current = this.form.currentBlock.container,
+			parent = this.previousForm.currentBlock.container 
+				? this.previousForm.currentBlock.container 
+				: $(this.previousForm.currentBlock).parent();
+		
+		
+		parent.show();
+		
+		setTimeout(() => {
+			parent.removeClass("hide");
+		}, 0);
+
+		setTimeout(() => {
+			current.hide();
+		}, 500);
+	}
+
+	closeNestedElement() {
+		if (this.form.currentBlock && this.form.currentBlock.container)
+			this.hideNestedElement();
+		else if (this.form.currentBlock)
+			this.block.find(this.form.currentBlock).hide();
+
+		this.formStack.pop();
+	}
+
+	closeBlockInStack() {
+		if (this.form.currentBlock && this.form.currentBlock.closeFunction)
+			this.form.currentBlock.return.off("click", this.form.currentBlock.closeFunction);
+ 
+		this.closeNestedElement();
+	}
 }

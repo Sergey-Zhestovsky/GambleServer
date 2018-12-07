@@ -4,15 +4,16 @@ import TableController from '/js/module/tableController.js';
 import Connector from '/js/module/connector.js';
 
 export default class ServerConnector extends Connector {
-    constructor({ path, tableConfig, actions = {}, relatedData, signRequests }) {
+    constructor({ path, tableConfig, actions = {}, relatedData, signRequests, customEvents = {} }) {
         super({signRequests});
 
         this.path = path;
         this.tableConfig = tableConfig;
         this.actions = actions;
         this.relatedData = relatedData;
+        this.customEvents = customEvents;
+        
         this.table;
-
         this.eventList = new Map();
 
         this.create();
@@ -57,6 +58,7 @@ export default class ServerConnector extends Connector {
 
     connectToTableController(data) {
         this.tableConfig = Object.assign(this.tableConfig, data);
+        this.tableConfig.connector = this;
         this.table = new TableController(this.tableConfig);
         this.setTableListners();
     }
@@ -74,6 +76,20 @@ export default class ServerConnector extends Connector {
         return this.request(this.path + this.actions[action].path, object);
     }
 
+    customEventRequest(eventName, object, cb) {
+        if (!this.customEvents[eventName])
+            return cb("wrong path");
+
+        this.request(this.path + this.customEvents[eventName], object)
+            .then((result) => {
+                cb(null, result);
+            })
+            .catch((error) => {
+                console.log(error)
+                cb(error)
+            });
+    }
+
     request(path, object) {
         return super.request(path, object);
     }
@@ -86,7 +102,7 @@ export default class ServerConnector extends Connector {
                     cb(null, result);
                 })
                 .catch( (error) => {
-                    console.log(error)
+                    console.error(error)
                     cb(error)
                 } );
         });

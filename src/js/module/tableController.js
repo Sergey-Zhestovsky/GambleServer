@@ -5,7 +5,7 @@ import PageController from '/js/module/pageController.js';
 import PopupForm from '/js/module/popupForm.js';
 
 export default class TableController {
-    constructor ({selector, pages, editForm, block, loader, addButton = false, schema, dbLength = 0, data = []}) {
+    constructor ({selector, pages, editForm, block, loader, addButton = false, schema, dbLength = 0, data = [], connector}) {
         this.selector = selector;
         this.pages = pages;
         this.editForm = editForm;
@@ -19,8 +19,11 @@ export default class TableController {
         this.SelectorBlock = new CustomDropDownSelector(this.selector);
         this.pages.maxPages = this.calculatePages();
         this.PageControllerBlock = new PageController(this.pages);
-        if (this.editForm)
+        
+        if (this.editForm) {
+            this.editForm.connector = connector;
             this.PopupFormBlock = new PopupForm(this.editForm);
+        }
 
         this.eventListner = new Map();
         this.setSelectorEvent();
