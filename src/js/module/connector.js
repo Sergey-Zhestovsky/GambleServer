@@ -26,8 +26,6 @@ export default class Connector {
         if (this.signRequests && localStorage.getItem('dynamicToken'))
             object.dynamicToken = localStorage.getItem('dynamicToken');
 
-        try {
-
         let source = axios.CancelToken.source(),
             request = axios.post(path, object, {
                 cancelToken: source.token
@@ -49,8 +47,6 @@ export default class Connector {
             cancel: source.cancel,
             request
         };
-
-        } catch(e) {console.log(e)}
     }
 
     ErrorHandler(path, object, error, result) {
