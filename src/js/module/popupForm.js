@@ -389,10 +389,23 @@ export default class PopupForm {
 	}
 
 	openNestedElement({ nestedElement: {id , title}, serverRequest }, initialCB = () => {}) {
-		let cb = (...args) => {
+		let requestObject,
+		close = (e) => {
+			if (requestObject)
+				requestObject.cancel();
+
+			this.form.currentBlock.closeFunction = undefined;
 			this.form.currentBlock.loading.removeClass("active");
-			this.clear();
-			initialCB(...args);
+			
+			if (e)
+				this.clear();
+		},
+		cb = (error, result) => {
+			if (error)
+				return;
+
+			close(true);
+			initialCB(error, result);
 		},
 		callBack = () => {
 			if (serverRequest)
@@ -401,14 +414,11 @@ export default class PopupForm {
 						return;
 
 					this.form.currentBlock.loading.addClass("active");
-					this.connector.customEventRequest(serverRequest.eventName, result, cb);
+					requestObject = this.connector.customEventRequest(serverRequest.eventName, result, cb);
 				};
 			
 			return cb;
-		},
-		close = () => {
-			this.clear();
-		}
+		};
 
 		let block;
 
@@ -475,8 +485,10 @@ export default class PopupForm {
 	}
 
 	closeBlockInStack() {
-		if (this.form.currentBlock && this.form.currentBlock.closeFunction)
+		if (this.form.currentBlock && this.form.currentBlock.closeFunction) {
+			this.form.currentBlock.closeFunction();
 			this.form.currentBlock.return.off("click", this.form.currentBlock.closeFunction);
+		}
  
 		this.closeNestedElement();
 	}
