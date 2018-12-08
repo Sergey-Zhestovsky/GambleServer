@@ -80,17 +80,24 @@ export default class ServerConnector extends Connector {
         if (!this.customEvents[eventName])
             return cb("wrong path");
 
-        this.request(this.path + this.customEvents[eventName], object)
+        let requestObjcet = this.cancelableRequest(this.path + this.customEvents[eventName], object);
+
+        requestObjcet.request
             .then((result) => {
                 cb(null, result);
             })
             .catch((error) => {
-                console.log(error)
                 cb(error)
             });
+
+        return requestObjcet;
     }
 
     request(path, object) {
+        return super.request(path, object).request;
+    }
+
+    cancelableRequest(path, object) {
         return super.request(path, object);
     }
 
