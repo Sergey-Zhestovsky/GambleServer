@@ -9,10 +9,10 @@ let tableConfig = {
         block: $(".item-table_view-pages").first(),
         schema: {
             previous: {
-                value: "Previous"
+                value: localization.layouts.previous
             },
             next: {
-                value: "Next"
+                value: localization.layouts.next
             },
             current: {
                 class: "item-table_page-button page-current"
@@ -39,15 +39,15 @@ let tableConfig = {
             responsive: false
         },
         {
-            value: "Name",
+            value: localization.page.name,
             relatedData: "name"
         },
         {
-            value: "E-mail",
+            value: localization.page.mail,
             relatedData: "mail"
         },
         {
-            value: "Privilege",
+            value: localization.page.privilege,
             class: "table-block_min-width",
             relatedData: ["privilege", "name"]
         }]

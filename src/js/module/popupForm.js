@@ -16,6 +16,7 @@ export default class PopupForm {
 		this.connector = connector;
 
 		this.formStack = [];
+		this.initialObject;
 
 		this.createForm();
 	}
@@ -99,16 +100,15 @@ export default class PopupForm {
 			case "edit":
 				this.openEdit(object, currentSchema);
 				initialObject = object;
-				// this.initialObject = object;
+				this.initialObject = object;
 				break;
 			default:
 				return cb("unknown action")
 				break;
 		}
 
-		currentBlock = this.behavior ? this.behavior[action].block : null;
+		currentBlock = this.behavior ? $(this.behavior[action].block) : null;
 		succes = this.behavior ? this.behavior[action].succes : this.succes;
-		// this.succesCallBack = cb;
 		this.formStack.push({
 			currentBlock,
 			succesCallBack: cb,
@@ -116,7 +116,7 @@ export default class PopupForm {
 			currentSchema
 		});
 
-		this.show(currentBlock);
+		this.show();
 		this.setEvent("close");
 		this.setEvent("close", this.block.find(".popup-form_header-close i"));
 		this.setEvent("succes", this.block.find(succes));
@@ -162,9 +162,11 @@ export default class PopupForm {
 		}
 	}
 
-	show(innerWrapperBlock) {
-		if (innerWrapperBlock)
-			this.block.find(innerWrapperBlock).show();
+	show() {
+		if (this.form.currentBlock) {
+			this.form.currentBlock.show();
+			this.form.currentBlock.parent().show();
+		}
 
 		this.block.addClass("show-block");
 	}
@@ -212,6 +214,8 @@ export default class PopupForm {
 	clearAll() {
 		while(this.formStack.length != 0)
 			this.clear();
+
+		this.initialObject = undefined;
 	}
 
 	setEvent(state, target) {
@@ -414,7 +418,10 @@ export default class PopupForm {
 						return;
 
 					this.form.currentBlock.loading.addClass("active");
-					requestObject = this.connector.customEventRequest(serverRequest.eventName, result, cb);
+					requestObject = this.connector.customEventRequest(serverRequest.eventName, {
+						objectId: this.initialObject._id, 
+						createdObject: result
+					}, cb);
 				};
 			
 			return cb;
@@ -446,7 +453,7 @@ export default class PopupForm {
 		let current = this.form.currentBlock.container,
 			parent = this.previousForm.currentBlock.container 
 				? this.previousForm.currentBlock.container 
-				: $(this.previousForm.currentBlock).parent();
+				: this.previousForm.currentBlock.parent();
 		
 		
 		parent.addClass("hide");
@@ -461,7 +468,7 @@ export default class PopupForm {
 		let current = this.form.currentBlock.container,
 			parent = this.previousForm.currentBlock.container 
 				? this.previousForm.currentBlock.container 
-				: $(this.previousForm.currentBlock).parent();
+				: this.previousForm.currentBlock.parent();
 		
 		
 		parent.show();
@@ -479,7 +486,7 @@ export default class PopupForm {
 		if (this.form.currentBlock && this.form.currentBlock.container)
 			this.hideNestedElement();
 		else if (this.form.currentBlock)
-			this.block.find(this.form.currentBlock).hide();
+			this.form.currentBlock.hide();
 
 		this.formStack.pop();
 	}

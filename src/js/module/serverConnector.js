@@ -94,7 +94,7 @@ export default class ServerConnector extends Connector {
     }
 
     request(path, object) {
-        return super.request(path, object).request;
+        return super.straightRequest(path, object);
     }
 
     cancelableRequest(path, object) {

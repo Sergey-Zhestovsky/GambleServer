@@ -9,10 +9,10 @@ let tableConfig = {
         block: $(".item-table_view-pages").first(),
         schema: {
             previous: {
-                value: "Previous"
+                value: localization.layouts.previous
             },
             next: {
-                value: "Next"
+                value: localization.layouts.next
             },
             current: {
                 class: "item-table_page-button page-current"
@@ -27,7 +27,6 @@ let tableConfig = {
         }
     },
     editForm: {
-        title: "Product type",
         block: $(".popup-form-wrapper").first(),
         succes: ".popup-form_body-container-submit",
         validate: {
@@ -63,21 +62,21 @@ let tableConfig = {
             responsive: false
         },
         {
-            value: "name",
+            value: localization.page.name,
             relatedData: "name"
         },
         {
-            value: "url",
+            value: localization.page.url,
             relatedData: "url"
         },
         {
-            value: "options",
+            value: localization.layouts.options,
             class: "table-block_min-width table-block_center",
             buttons: ["edit"]
         }],
         buttons: {
             edit: {
-                name: "edit",
+                name: localization.layouts.edit,
                 class: "item-table_button",
                 action: "edit"
             }

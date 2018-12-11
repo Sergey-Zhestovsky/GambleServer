@@ -9,10 +9,10 @@ let tableConfig = {
         block: $(".item-table_view-pages").first(),
         schema: {
             previous: {
-                value: "Previous"
+                value: localization.layouts.previous
             },
             next: {
-                value: "Next"
+                value: localization.layouts.next
             },
             current: {
                 class: "item-table_page-button page-current"
@@ -27,7 +27,6 @@ let tableConfig = {
         }
     },
     editForm: {
-        title: "Product",
         block: $(".popup-form-wrapper").first(),
         validate: {
             func: formValidator,
@@ -71,16 +70,16 @@ let tableConfig = {
                             class: "slider-password"
                         },
                         delete: {
-                            value: "Delete"
+                            value: localization.layouts.delete
                         },
                         cancel: {
-                            value: "Cancel"
+                            value: localization.layouts.cancel
                         }
                     },
                     onAdd: {
                         nestedElement: {
                             id: "password",
-                            title: "Password"
+                            title: localization.page.password
                         }
                     }
                 }, {
@@ -96,16 +95,16 @@ let tableConfig = {
                             class: "slider-fingerprint"
                         },
                         delete: {
-                            value: "Delete"
+                            value: localization.layouts.delete
                         },
                         cancel: {
-                            value: "Cancel"
+                            value: localization.layouts.cancel
                         }
                     },
                     onAdd: {
                         nestedElement: {
                             id: "requestStub",
-                            title: "Fingerprint"
+                            title: localization.page.fingerprint
                         },
                         serverRequest: {
                             eventName: "synchroniseWithDevice"
@@ -124,16 +123,16 @@ let tableConfig = {
                             class: "slider-voice"
                         },
                         delete: {
-                            value: "Delete"
+                            value: localization.layouts.delete
                         },
                         cancel: {
-                            value: "Cancel"
+                            value: localization.layouts.cancel
                         }
                     },
                     onAdd: {
                         nestedElement: {
                             id: "requestStub",
-                            title: "Voice records"
+                            title: localization.page.voiceRecord
                         },
                         serverRequest: {
                             eventName: "synchroniseWithDevice"
@@ -184,21 +183,21 @@ let tableConfig = {
             responsive: false
         },
         {
-            value: "Product type",
+            value: localization.page.productType,
             relatedData: ["productType", "name"]
         },
         {
-            value: "Shop code",
+            value: localization.page.shopCode,
             relatedData: "shopCode"
         },
         {
-            value: "options",
+            value: localization.layouts.options,
             class: "table-block_min-width table-block_center",
             buttons: ["edit"]
         }],
         buttons: {
             edit: {
-                name: "edit",
+                name: localization.layouts.edit,
                 class: "item-table_button",
                 action: "edit"
             }

@@ -1,14 +1,17 @@
 {
-	"usersConfirmation": "Підтвердження користувачів",
-	"id": "Id",
-	"name": "Повне ім'я",
+	"productTypes": "Типи пристроїв",
+	"products": "Пристрої",
+	"users": "Користувачі",
+	"productTypesTable": "Таблиця типів пристроїв",
+	"productsTable": "Таблиця рристроїв",
+	"usersTable": "Таблиця користувачів",
+	"edit": "Редагувати",
+	"product": "Пристрій",
+	"productType": "Тип пристрою",
+	"shopCode": "Товарний код",
+	"submit": "Підтвердити",
+	"name": "Ім'я",
+	"url": "Url",
 	"mail": "E-mail",
-	"account": "Рахунок",
-	"options": "Параметри",
-	"devicesRentConfirmation": "Підтвердження оренди пристроїв",
-	"address": "Адреса",
-	"containerNumder": "Контейнер №",
-	"deliveryConfirmation": "Підтвердження доставки пристроїв",
-	"passportId": "Паспортний ідентифікатор",
-	"confirm": "Підтвердити"
+	"privilege": "Привілей"
 }

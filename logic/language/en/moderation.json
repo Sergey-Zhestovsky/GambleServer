@@ -1,14 +1,17 @@
 {
-	"usersConfirmation": "Users confirmation",
-	"id": "Id",
-	"name": "Full name",
+	"productTypes": "Product types",
+	"products": "Products",
+	"users": "Users",
+	"productTypesTable": "Product types table",
+	"productsTable": "Products table",
+	"usersTable": "Users table",
+	"edit": "Edit",
+	"product": "Product",
+	"productType": "Product type",
+	"shopCode": "Shop code",
+	"submit": "Submit",
+	"name": "Name",
+	"url": "Url",
 	"mail": "E-mail",
-	"account": "Account",
-	"options": "Options",
-	"devicesRentConfirmation": "Devices rent confirmation",
-	"address": "Address",
-	"containerNumder": "Container №",
-	"deliveryConfirmation": "Devices initial delivery confirmation",
-	"passportId": "Passport identity",
-	"confirm": "Confirm"
+	"privilege": "Privilege"
 }

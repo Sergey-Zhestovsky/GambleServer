@@ -10,23 +10,23 @@
 <body>
     <% include _layouts/title %>
     <script type="text/javascript">
-    window.localization = <%- JSON.stringify(text.page) %>;
+        window.localization = <%- JSON.stringify(text) %>;
     </script>
     <main class="wrapper">
         <div class="center-align">
             <div class="account_container">
-                <div class="account_container-title" data-text="Personal information">Personal information</div>
+                <div class="account_container-title" data-text="<%= text.page.personalInformation %>"><%= text.page.personalInformation %></div>
                 <div class="account_information">
                     <div class="account_information-label">
-                        <div class="account_information-title">Full name</div>
+                        <div class="account_information-title"><%= text.page.fullName %></div>
                         <div class="account_information-context"><%-userData.user.name%></div>
                     </div>
                     <div class="account_information-label">
-                        <div class="account_information-title">E-mail</div>
+                        <div class="account_information-title"><%= text.page.mail %></div>
                         <div class="account_information-context"><%-userData.user.mail%></div>
                     </div>
                     <div class="account_information-label">
-                        <div class="account_information-title">Account secure</div>
+                        <div class="account_information-title"><%= text.page.accountSecure %></div>
                         <div class="account_information-context">
                             <% if (userData.user.salt) { %>
                                 <i class="fa fa-check" aria-hidden="true"></i>
@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <div class="account_information-label">
-                        <div class="account_information-title">Amount of devices</div>
+                        <div class="account_information-title"><%= text.page.amountOfDevices %></div>
                         <div class="account_information-context" id="amountOfDevices"><%-userData.deviceLength%></div>
                     </div>
                 </div>
@@ -44,18 +44,18 @@
             <div class="account_container container-item-table">
                 <div class="item-table">
                     <div class="item-table_header">
-                        <div class="item-table_header-title" data-text="Products table">Products table</div>
+                        <div class="item-table_header-title" data-text="<%= text.page.productTable %>"><%= text.page.productTable %></div>
                         <div class="item-table_view-setting">
                             <div class="item-table_view-anount">
-                                <span>Show</span>
+                                <span><%= text.layouts.show %></span>
                                 <div class="custom-select">
                                     <div class="select-styled"></div>
                                     <ul class="select-options hide">
                                     </ul>
                                 </div>
-                                <span>entries</span>
+                                <span><%= text.layouts.entries %></span>
                             </div>
-                            <div class="item-table_add-button">Add</div>
+                            <div class="item-table_add-button"><%= text.layouts.add %></div>
                             <div class="item-table_view-pages">
                             </div>
                         </div>
@@ -75,7 +75,7 @@
     <div class="popup-form-wrapper">
         <div class="popup-form">
             <div class="popup-form_header popup-form_center">
-                <div class="popup-form_header-title">Edit</div>
+                <div class="popup-form_header-title"><%= text.page.edit %></div>
                 <div class="popup-form_header-close">
                     <i class="fa fa-times"></i>
                 </div>
@@ -83,47 +83,47 @@
             <div class="popup-form_body">
                 <div class="popup-form_body-container">
                     <div class="popup-form_body-container-wrapper" id="popupFormAdd" style="display:none;">
-                        <div class="popup-form_body-container-title">Product</div>
+                        <div class="popup-form_body-container-title"><%= text.page.product %></div>
                         <div class="popup-form_body-container-form">
                             <div class="popup-form_body-container-content">
                                 <label class="popup-form_body-container-label input-label">
-                                    <span class="popup-form_body-container-label-title">Product code</span>
+                                    <span class="popup-form_body-container-label-title"><%= text.page.productCode %></span>
                                     <input class="popup-form_body-container-label-input" id="popupFormAddShopCode">
                                     <div class="popup-form_error-block"></div>
                                 </label>
                             </div>
-                            <div class="popup-form_body-container-submit" id="popupFormAddSucces">Submit</div>
+                            <div class="popup-form_body-container-submit" id="popupFormAddSucces"><%= text.page.submit %></div>
                         </div>
                     </div>
                     <div class="popup-form_body-container-wrapper" id="popupFormEdit" style="display:none;">
-                        <div class="popup-form_body-container-title">Product</div>
+                        <div class="popup-form_body-container-title"><%= text.page.product %></div>
                         <div class="popup-form_body-container-form">
                             <div class="popup-form_body-container-content fixed-width">
                                 <label class="popup-form_body-container-label text-label">
-                                    <span class="popup-form_body-container-label-title">Product type</span>
+                                    <span class="popup-form_body-container-label-title"><%= text.page.productType %></span>
                                     <span class="popup-form_body-container-label-text" id="popupFormEditProductType"></span>
                                 </label>
                                 <label class="popup-form_body-container-label input-label text-label">
-                                    <span class="popup-form_body-container-label-title">Shop code</span>
+                                    <span class="popup-form_body-container-label-title"><%= text.page.shopCode %></span>
                                     <span class="popup-form_body-container-label-text" id="popupFormEditShopCode"></span>
                                 </label>
                             </div>
                             <div class="popup-form_slider-container">
-                                <div class="popup-form_slider-header">Passwords</div>
+                                <div class="popup-form_slider-header"><%= text.page.passwords %></div>
                                 <div class="popup-form_slider" id="popupFormEditPassword">
                                 </div>
                             </div>
                             <div class="popup-form_slider-container">
-                                <div class="popup-form_slider-header">Fingerprints</div>
+                                <div class="popup-form_slider-header"><%= text.page.fingerprints %></div>
                                 <div class="popup-form_slider" id="popupFormEditFingerprint">
                                 </div>
                             </div>
                             <div class="popup-form_slider-container">
-                                <div class="popup-form_slider-header">Voice records</div>
+                                <div class="popup-form_slider-header"><%= text.page.voiceRecords %></div>
                                 <div class="popup-form_slider" id="popupFormEditVoice">
                                 </div>
                             </div>
-                            <div class="popup-form_body-container-submit" id="popupFormEditSucces">Submit</div>
+                            <div class="popup-form_body-container-submit" id="popupFormEditSucces"><%= text.page.submit %></div>
                         </div>
                     </div>
                 </div>
@@ -132,17 +132,17 @@
                         <div class="popup-form_body-container-form">
                             <div class="popup-form_body-container-content fixed-width">
                                 <label class="popup-form_body-container-label input-label">
-                                    <span class="popup-form_body-container-label-title">Name</span>
+                                    <span class="popup-form_body-container-label-title"><%= text.page.name %></span>
                                     <input class="popup-form_body-container-label-input" id="popupFormEditPasswordName">
                                     <div class="popup-form_error-block"></div>
                                 </label>
                                 <label class="popup-form_body-container-label input-label">
-                                    <span class="popup-form_body-container-label-title">Password</span>
+                                    <span class="popup-form_body-container-label-title"><%= text.page.password %></span>
                                     <input class="popup-form_body-container-label-input" id="popupFormEditPasswordPassword">
                                     <div class="popup-form_error-block"></div>
                                 </label>
                             </div>
-                            <div class="popup-form_body-container-submit" id="popupFormEditPasswordSucces">Submit</div>
+                            <div class="popup-form_body-container-submit" id="popupFormEditPasswordSucces"><%= text.page.submit %></div>
                         </div>
                     </div>
                 </div>
@@ -151,16 +151,15 @@
                         <div class="popup-form_body-container-form">
                             <div class="popup-form_body-container-content fixed-width">
                                 <label class="popup-form_body-container-label input-label">
-                                    <span class="popup-form_body-container-label-title">Name</span>
+                                    <span class="popup-form_body-container-label-title"><%= text.page.name %></span>
                                     <input class="popup-form_body-container-label-input" id="popupFormEditRequestStubName">
                                     <div class="popup-form_error-block"></div>
                                 </label>
                             </div>
-                            <div class="popup-form_body-container-submit" id="popupFormEditRequestStubSucces">Submit</div>
+                            <div class="popup-form_body-container-submit" id="popupFormEditRequestStubSucces"><%= text.page.submit %></div>
                         </div>
                         <div class="popup-form_body-container-wrapper-loading">
-                            <div class="popup-form_loading-text">Waiting device answer</div>
-                            
+                            <div class="popup-form_loading-text"><%= text.page.waitingDeviceAnswer %></div>
                         </div>
                     </div>
                 </div>

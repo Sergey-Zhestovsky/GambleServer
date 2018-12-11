@@ -10,35 +10,35 @@
 <body>
     <% include _layouts/title %>
     <script type="text/javascript">
-    window.localization = <%- JSON.stringify(text.page) %>;
+    window.localization = <%- JSON.stringify(text) %>;
     </script>
     <div class="wrapper">
         <div class="center-align">
             <div class="moderation__menu">
-                <a href="/moderation/productTypes" class="moderation__menu-buttons <%if (module == "productTypes") { %>active-buttons<% } %>">Product types</a>
-                <a href="/moderation/products" class="moderation__menu-buttons <%if (module == "products") { %>active-buttons<% } %>">Products</a>
-                <a href="/moderation/users" class="moderation__menu-buttons <%if (module == "users") { %>active-buttons<% } %>">Users</a>
+                <a href="/moderation/productTypes" class="moderation__menu-buttons <%if (module == "productTypes") { %>active-buttons<% } %>"><%= text.page.productTypes %></a>
+                <a href="/moderation/products" class="moderation__menu-buttons <%if (module == "products") { %>active-buttons<% } %>"><%= text.page.products %></a>
+                <a href="/moderation/users" class="moderation__menu-buttons <%if (module == "users") { %>active-buttons<% } %>"><%= text.page.users %></a>
             </div>
             <div class="moderation__main-block">
                 <div class="moderation_container">
                     <div class="item-table">
                         <div class="item-table_header">
                             <div class="item-table_header-title">
-                                <%if (module == "productTypes") { %>Product types table<% } %>
-                                <%if (module == "products") { %>Products table<% } %>
-                                <%if (module == "users") { %>Users table<% } %>
+                                <%if (module == "productTypes") { %><%= text.page.productTypesTable %><% } %>
+                                <%if (module == "products") { %><%= text.page.productsTable %><% } %>
+                                <%if (module == "users") { %><%= text.page.usersTable %><% } %>
                             </div>
                             <div class="item-table_view-setting">
                                 <div class="item-table_view-anount">
-                                    <span>Show</span>
+                                    <span><%= text.layouts.show %></span>
                                     <div class="custom-select">
                                         <div class="select-styled"></div>
                                         <ul class="select-options hide">
                                         </ul>
                                     </div>
-                                    <span>entries</span>
+                                    <span><%= text.layouts.entries %></span>
                                 </div>
-                                <%if (module !== "users") { %><div class="item-table_add-button">Add</div><% } %>
+                                <%if (module !== "users") { %><div class="item-table_add-button"><%= text.layouts.add %></div><% } %>
                                 <div class="item-table_view-pages">
                                 </div>
                             </div>
@@ -59,7 +59,7 @@
     <div class="popup-form-wrapper">
         <div class="popup-form">
             <div class="popup-form_header popup-form_center">
-                <div class="popup-form_header-title">Edit</div>
+                <div class="popup-form_header-title"><%= text.layouts.edit %></div>
                 <div class="popup-form_header-close">
                     <i class="fa fa-times"></i>
                 </div>
@@ -76,6 +76,5 @@
 </body>
 <script async defer type="text/javascript" src="/js/formValidator.js"></script>
 <script async defer type="text/javascript" src="/js/header.js"></script>
-<!-- <script async defer type="text/javascript" src="/js/page/moderation.js"></script> -->
 <script async defer type="module" src="/js/page/moderation/<%= module %>.js"></script>
 </html>
