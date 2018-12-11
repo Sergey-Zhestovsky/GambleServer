@@ -226,7 +226,7 @@ let connector = new ServerConnector({
     relatedData: [{
         name: "productType",
         to: "editForm",
-        path: "/moderation/productTypes/get",
+        path: "/account/productTypes/get",
         options: {
             length: -1,
             padding: 0

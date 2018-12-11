@@ -301,5 +301,6 @@ module.exports = {
     getUser,
     tablesDataManager,
     getUserAccountData,
-    userDeviceManager
+    userDeviceManager,
+    getProductTypes
 };

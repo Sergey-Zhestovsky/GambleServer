@@ -30,6 +30,20 @@ router.get('/', function(req, res, next) {
     });
 });
 
+router.post('/productTypes/get', function(req, res, next) {
+    let data = req.body;
+
+    if (validator(data, ["length", "padding"]))
+        return res.send(errorGenerator.requireData());
+
+    mongo.getProductTypes(data, (error, result) => {
+        if (error)
+            return res.send(errorGenerator.mongodbError(req, error));
+
+        res.send({ error, result });
+    });
+});
+
 router.post('/devices/:action', function(req, res, next) {
     let action = req.params.action,
         data = req.body;
