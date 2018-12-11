@@ -1,5 +1,4 @@
-;
-(function() {
+;(function() {
   window.formValidator = window.formValidator || function() {
     let result, error = Object.create(null);
 
