@@ -270,7 +270,7 @@
     min-width: 400px;
     margin: 10px 0;
     width: 90vw;
-    min-height: 600px;
+    @min-height: 600px;
     box-shadow: 0 7px 30px -5px #00000061;
     cursor: auto;
 }
