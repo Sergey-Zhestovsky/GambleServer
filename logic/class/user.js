@@ -46,7 +46,7 @@ class User {
           userJSON = JSON.stringify(user),
           token = jwt.sign(userJSON, config.get('encode_server_key'));
 
-      res.cookie('token', token, { expires: new Date(Date.now() + 315360000), httpOnly: true });
+      res.cookie('token', token, { expires: new Date(Date.now() + 315360000000), httpOnly: true });
       resolve(user);
     });
   }
