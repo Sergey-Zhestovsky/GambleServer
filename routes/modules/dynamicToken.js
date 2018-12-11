@@ -11,10 +11,10 @@ module.exports = function dynamicToken(req, res, next) {
     	return generateCookie(req, res, "cookieNotFound");
 
     if (!bodyToken)
-        return res.send(errorGenerator.dynamicCookie("bodyTokenNotFound", token));
+        return res.send(errorGenerator.dynamicCookie("bodyTokenNotFound", dynamicToken));
 
-    if (dynamicToken !== bodyToken)
-        return res.send(errorGenerator.dynamicCookie("signsNotEqual", token));
+    if (dynamicToken !== bodyToken) 
+        return res.send(errorGenerator.dynamicCookie("signsNotEqual", dynamicToken));
 
     jwt.verify(bodyToken, config.get('encode_server_key'), function(err, decoded) {
         if (err)

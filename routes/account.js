@@ -4,6 +4,7 @@ let express = require('express'),
     errorGenerator = require('../logic/error-generator'),
     language = require('../logic/language'),
     dynamicTokenValidator = require('./modules/dynamicToken.js'),
+    deviceBrocker = require('./deviceBrocker.js').setRequestInQueue,
     validator = require('../logic/class/requestValidator');
 
 router.all('*', function(req, res, next) {
@@ -24,8 +25,7 @@ router.get('/', function(req, res, next) {
             title: 'Gamble',
             userData: result,
             user: req.data.user,
-            language: req.cookies.language,
-            text: language.getTranslate(req.data.language, 'account')
+            text: language.getTranslate(req.data.language, "account", "tableModule")
         });
     });
 });
@@ -45,17 +45,6 @@ router.post('/devices/:action', function(req, res, next) {
     });
 });
 
-router.post('/deviceStub/get', function(req, res, next) {
-    let data = req.body;
-
-    if (validator(data, ["name"]))
-        return res.send(errorGenerator.requireData());
-
-    data.value = Math.random();
-
-    setTimeout(() => {
-        res.send({error: null, result: data});
-    }, 2000);
-});
+router.post('/deviceStub/get', deviceBrocker);
 
 module.exports = router;

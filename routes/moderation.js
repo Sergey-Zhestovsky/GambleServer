@@ -23,7 +23,7 @@ router.get('/:id', function(req, res, next) {
   res.render('moderation', {
     title: 'Gamble',
     user: req.data.user,
-    text: language.getTranslate(req.data.language, 'moderation'),
+    text: language.getTranslate(req.data.language, 'moderation', "tableModule"),
     module: id
   });
 });
