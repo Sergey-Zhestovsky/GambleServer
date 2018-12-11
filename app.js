@@ -16,7 +16,8 @@ let entryRouter =         require('./routes/entry'),
     indexRouter =         require('./routes/index'),
     accountRouter =       require('./routes/account'),
     moderationRouter =    require('./routes/moderation'),
-    errorRouter =         require('./routes/error');
+    errorRouter =         require('./routes/error'),
+    deviceBrocker =       require('./routes/deviceBrocker').router;
 
 let app = express();
 
@@ -40,9 +41,9 @@ if (app.get('env') === 'development') {
 }
 app.use("/js", express.static(__dirname + `/${publicRoute}/js`));
 app.use("/css", express.static(__dirname + `/${publicRoute}/css`));
-app.use("/img", express.static(__dirname + `/${publicRoute}/img`));
-app.use("/fonts", express.static(__dirname + `/${publicRoute}/fonts`));
-app.use(favicon(__dirname + `/${publicRoute}/img/favicon.ico`)); 
+app.use("/img", express.static(__dirname + `/public/img`));
+app.use("/fonts", express.static(__dirname + `/public/fonts`));
+app.use(favicon(__dirname + `/public/img/favicon.ico`)); 
 
 app.all("*", entryRouter);
 app.use('/', indexRouter);
@@ -50,6 +51,7 @@ app.use('/registration', registrationRouter);
 app.use('/authorisation', authorisationRouter);
 app.use('/account', accountRouter);
 app.use('/moderation', moderationRouter);
+app.use('/device/connector', deviceBrocker);
 
 app.use(function(req, res, next) {
   next(createError(404));
