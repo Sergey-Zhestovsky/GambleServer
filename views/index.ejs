@@ -3,18 +3,78 @@
 
 <head>
     <% include _layouts/header %>
+    <script async defer type="text/javascript" src="/js/glowingNodes.js"></script>
     <link rel='stylesheet' href='/css/main.css' />
 </head>
 
 <body>
-    <script type="text/javascript">
-    window.localization = <%- JSON.stringify(text.layouts) %>;
-    </script>
-    <% include _layouts/title %>
     <div class="wrapper">
-        HI
-    </div>
-    <% include _layouts/footer %>
+        <div class="intro">
+            <div class="header-wrapper">
+                <% include _layouts/title %>
+            </div>
+            <div class="intro_image">
+                <img src="/img/logo-big.png">
+            </div>
+                <div class="intro_scroll-icon"></div>
+                <canvas class="intro_glowing-nodes"></canvas>
+            </div>
+            <div class="container sidewise-top dark-background">
+                <div class="container_element center-align">
+                    <div class="text-title">Title</div>
+                    <div class="text-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio deleniti, voluptatem mollitia quo suscipit omnis vitae aliquam dicta maxime veritatis pariatur sequi facere commodi. Voluptatum laborum distinctio, dolore ullam corporis maiores dolorem officiis voluptatem ex earum soluta rerum sapiente ipsam iusto sequi beatae alias atque deleniti quis vero nisi, quibusdam quaerat, vel. Sed repellendus iste explicabo dolorem veritatis. Nulla optio nesciunt, ipsam repudiandae eum distinctio illo repellendus, ad mollitia quos blanditiis adipisci aspernatur, officia maiores reprehenderit. Dolore consequuntur reprehenderit sapiente ducimus voluptate, eos ad rem debitis, perspiciatis similique labore laborum non exercitationem harum laudantium libero consequatur vel earum cum, quis!</div>
+                </div>
+                <div class="container_element center-align flex-block">
+                    <div class="app-item">
+                        <div class="app-item_bg-container" style="background-image: url(/img/safe2.jpg)">
+                            <div class="app-item_mask">
+                                <div class="app-item_content">
+                                    <h2>Safe</h2>
+                                    <span>Distinctio deleniti, voluptatem mollitia.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-item_bg-container" style="background-image: url(/img/door2.jpg)">
+                            <div class="app-item_mask">
+                                <div class="app-item_content">
+                                    <h2>Security Door</h2>
+                                    <span>Dolore consequuntur reprehenderit.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container pattern-background">
+                <div class="container_element center-align">
+                    <div class="text-title">Title</div>
+                    <div class="text-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio deleniti, voluptatem mollitia quo suscipit omnis vitae aliquam dicta maxime veritatis pariatur sequi facere commodi. Voluptatum laborum distinctio, dolore ullam corporis maiores dolorem officiis voluptatem ex earum soluta rerum sapiente ipsam iusto sequi beatae alias atque deleniti quis vero nisi, quibusdam quaerat, vel. Sed repellendus iste explicabo dolorem veritatis. Nulla optio nesciunt, ipsam repudiandae eum distinctio illo repellendus, ad mollitia quos blanditiis adipisci aspernatur, officia maiores reprehenderit. Dolore consequuntur reprehenderit sapiente ducimus voluptate, eos ad rem debitis, perspiciatis similique labore laborum non exercitationem harum laudantium libero consequatur vel earum cum, quis!</div>
+                </div>
+                <div class="container_element center-align statistic-wrapper">
+                    <div class="statistic" style="background-image: url(/img/1234.png)">
+                        <div class="statistic_text-block">
+                            <div class="statistic_text-header">Devices sold</div>
+                            <div class="statistic_text-content">487646</div>
+                        </div>
+                    </div>
+                    <div class="statistic" style="background-image: url(/img/users.png)">
+                        <div class="statistic_text-block">
+                            <div class="statistic_text-header">Comunity</div>
+                            <div class="statistic_text-content">36467</div>
+                        </div>
+                    </div>
+                    <div class="statistic" style="background-image: url(/img/money.png)">
+                        <div class="statistic_text-block">
+                            <div class="statistic_text-header">Currently invested</div>
+                            <div class="statistic_text-content">734784$</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% include _layouts/footer %>
 </body>
 <script async defer type="text/javascript" src="/js/header.js"></script>
 <script async defer type="text/javascript" src="/js/page/index.js"></script>

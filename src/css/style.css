@@ -120,7 +120,7 @@ img:focus {
     left: 50%;
     height: 100%;
     width: 0;
-    background: #e2e2e2;
+    background: rgba(0, 0, 0, 0.08);
     z-index: -1;
     opacity: 0;
     transition: all .225s;
