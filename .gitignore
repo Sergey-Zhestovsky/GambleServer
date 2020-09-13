@@ -2,8 +2,6 @@
 
 /node_modules/
 
-/public/*
-
 src/img
 src/fonts
 
